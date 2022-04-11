@@ -1,10 +1,17 @@
-import type {NextPage} from 'next'
+import {useContext, useEffect} from "react";
+import {store} from "../components";
+import {Page} from "../Types";
 
-const Home: NextPage = () => {
-    return <>
-        <p>Hello World!</p>
-    </>
+const Home = () => {
+    const context = useContext(store)
+    useEffect(() => {
+        context.setActivePage(Page.Home)
+    }, [context])
+    return (
+        <div>
+            <h1>Home</h1>
+        </div>
+    );
+};
 
-}
-
-export default Home
+export default Home;

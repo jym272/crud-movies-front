@@ -1,0 +1,32 @@
+.rating__classification {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  span + span {
+    margin-left: 0.5rem;
+  }
+
+  span .classification {
+    background-color: #5676c7;
+    border-radius: 0.4rem;
+    padding: 0.3em 0.5em;
+    color: #ffffff;
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.39);
+  }
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: repeat(5, 35px);
+  align-items: center;
+  background: repeating-linear-gradient(#95dae1 0 35px, transparent 35px 70px);
+
+  span {
+    font-weight: bold;
+    padding-left: 5px;
+  }
+
+}

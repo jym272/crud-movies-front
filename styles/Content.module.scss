@@ -1,0 +1,11 @@
+.content {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+
+  background-color: #fafafa;
+
+  .children {
+    padding-right: 2rem;
+  }
+
+}
