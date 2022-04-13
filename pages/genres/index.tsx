@@ -1,5 +1,5 @@
 import {useContext, useEffect} from "react";
-import {store} from "../../components";
+import {GenresComponent, store} from "../../components";
 import {Genres, Page} from "../../Types";
 import {GetServerSideProps} from "next";
 
@@ -8,20 +8,12 @@ const Genres = ({genres, error}: { genres: Array<Genres>, error: string | null }
     useEffect(() => {
         context.setActivePage(Page.Genres)
     }, [context])
-    return (
-        <div>
-            {error ? <div>{error}</div> :
-                <div>
-                    {Object.values(genres).map((genre: Genres, index) => (
-                        <div key={index}>
-                            <div>{genre.name}</div>
-                        </div>
-                    ))}
-                </div>
-            }
-        </div>
-    )
-
+    if (error) {
+        return <div>{error}</div>
+    }
+    return <>
+        <GenresComponent genres={Object.values(genres)}/>
+    </>
 
 }
 export default Genres

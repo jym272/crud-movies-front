@@ -17,6 +17,7 @@ const Movie = ({movie, error}: { movie: MovieType, error: string | null }) => {
 export default Movie;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    console.log(context);
     const id = context.params?.id;
     const regex = /^\d+$/;
     if (!regex.test(id as string)) {

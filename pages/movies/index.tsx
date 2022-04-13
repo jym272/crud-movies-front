@@ -1,7 +1,6 @@
 import {useContext, useEffect} from "react";
-import {store} from "../../components";
+import {ListOfMovies, store} from "../../components";
 import {MovieType, Page} from "../../Types";
-import Link from "next/link";
 import {GetServerSideProps} from "next";
 
 const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | null }) => {
@@ -10,27 +9,9 @@ const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | nul
         context.setActivePage(Page.Movies)
     }, [context])
 
-    const listMoviesTitle = movies.map((movie: MovieType) => {
-        return <li key={movie.id}>
-            <Link href={`/movies/${movie.id}`}>
-                <a>{movie.title}</a>
-            </Link>
-        </li>
-    })
-
-    return (
-        <div>
-            <h1>Movies</h1>
-            {error ? <p>{error}</p> :
-                listMoviesTitle.length > 0 ?
-                    <ul>
-                        {listMoviesTitle}
-                    </ul>
-                    :
-                    <p>No movies</p>
-            }
-        </div>
-    )
+    return <>
+        <ListOfMovies title={"Movies"} movies={movies} error={error}/>
+    </>
 }
 export default Movies
 

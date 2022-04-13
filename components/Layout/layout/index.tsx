@@ -1,7 +1,7 @@
 import {ReactNode} from "react";
 import {Title} from "../../title";
 import {Navigation} from "../navigation";
-import styles from "../../../styles/Content.module.scss"
+import styles from "./Layout.module.scss"
 
 export const Layout = ({children}: { children: ReactNode }) => {
     return <>

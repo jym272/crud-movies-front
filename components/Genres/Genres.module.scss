@@ -1,0 +1,28 @@
+.genres {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-gap: 20px;
+
+  a {
+    display: flex;
+    background-color: black;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #000000;
+    padding: 1em;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  a:hover {
+    background-color: white;
+    color: black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.0);
+  }
+}

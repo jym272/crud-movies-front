@@ -3,8 +3,7 @@ import React from "react";
 const defaultValue = {
     activePage: "",
     setActivePage: (page: string) => {
-
-    }
+    },
 };
 
 export const store = React.createContext(defaultValue);
@@ -16,10 +15,11 @@ export const StoreProvider = ({children}: { children: React.ReactNode }) => {
         setPage(page);
     };
 
+
     return (
         <store.Provider value={{
             activePage,
-            setActivePage
+            setActivePage,
         }}>
             {children}
         </store.Provider>
