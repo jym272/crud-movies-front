@@ -89,5 +89,21 @@
     margin-top: 16px;
   }
 
+  .error {
+    color: red;
+    //font-size: 1.2rem;
+    //font-weight: bold;
+    border: 1px solid #c75151;
+    background-color: rgba(255, 0, 0, 0.08);
+  }
+
+  .success,
+  .success:hover {
+    color: #ffffff;
+    border: 1px solid rgb(7, 157, 7);
+    background-color: rgb(7, 157, 7);
+    cursor: auto;
+  }
+
 }
 

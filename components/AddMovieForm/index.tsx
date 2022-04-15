@@ -1,5 +1,5 @@
 import styles from "./AddMovieForm.module.scss"
-import React from "react";
+import React, {useEffect} from "react";
 import {MovieType, MPAARating} from "../../Types";
 import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
@@ -25,6 +25,26 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
     const [runtime, setRuntime] = React.useState(initialState.runtime);
     const [description, setDescription] = React.useState(initialState.description);
     const [rating, setRating] = React.useState(initialState.rating);
+    const [errors, setErrors] = React.useState<Array<string>>([]);
+    //TODO: crear un dispathac para loading, error, success
+
+    const [success, setSuccess] = React.useState({
+        status: false,
+        message: ''
+    });
+
+    useEffect(() => {
+        let timeOutId: NodeJS.Timeout
+        if (success.status) {
+            timeOutId = setTimeout(async () => {
+                await router.replace('/movies')
+            }, 1200)
+        }
+        return () => {
+            clearTimeout(timeOutId)
+        }
+
+    }, [router, success])
 
     const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -35,10 +55,21 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         const genresOption = document.querySelector("#genres") as HTMLSelectElement
         const genresValue = Array.from(genresOption.selectedOptions).map(option => option.value)
 
+
+        // const newForm = new FormData(event.target as HTMLFormElement)
+        // console.log(Object.fromEntries(newForm.entries()))
         //TODO: validate the form, if it is valid, send the data to the server using an api call
+
+        if (title.trim() === '' || title.trim().length > 50) {
+            setErrors((previousValues) => {
+                return [...previousValues, 'title']
+            })
+        }
+
+
         const payload: MovieType = {
             id: movie ? movie.id : 0, //zero is a new movie
-            title,
+            title: title.trim(),
             release_date: releaseDate + "T00:00:00Z",
             runtime: Number(runtime),
             description,
@@ -54,16 +85,30 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             body: JSON.stringify(payload)
         }
         //TODO: the response can be better handled, with a status, error, loading, etc...
+        // a loading bar will be awesome
         fetch(`http://localhost:8080/v1/movie?id=${payload.id}`, postObject)
             .then(response => response.json())
-            .then(data => console.log(data))
-        console.log("Form submitted")
+            .then(data => {
+                if (data?.status === 200) {
+                    setSuccess({
+                        status: true,
+                        message: data.message
+                    })
+                } else {
+                    throw new Error(data.error)
+                }
+
+            }).catch(error => console.log(error))
         //redirect to home, replace history
-        router.replace('/').then(r => console.log(r))
+        // router.replace('/').then(r => console.log(r))
 
     }
 
     const titleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        //remove the error if it exists
+        setErrors((previousValues) => {
+            return previousValues.filter(value => value !== 'title')
+        })
         setTitle(event.target.value)
     }
     const releaseDateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,9 +132,18 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
     return (
         <form className={styles.form} onSubmit={submitFormHandler}>
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" value={title} onChange={titleHandler} maxLength={50} minLength={2} required/>
+            <input type="text" id="title"
+                   value={title}
+                   name="title" onChange={titleHandler} maxLength={50}
+                   minLength={2}
+                   onFocus={() => setErrors((previousValues) => {
+                       return previousValues.filter(value => value !== 'title')
+                   })}
+                   className={errors.includes('title') ? styles.error : ''}
+                   required/>
             <label htmlFor="release">Release Date</label>
-            <input type="date" id="release" value={releaseDate} onChange={releaseDateHandler} required/>
+            <input type="date" id="release" value={releaseDate} onChange={releaseDateHandler} required min="1900-01-01"
+                   max="2030-01-01"/>
             <label htmlFor="runtime">Runtime</label>
             <input type="number" id="runtime" min={1} step={1} value={runtime} onChange={runtimeHandler} required/>
             <label htmlFor="mpaa">MPAA Rating</label>
@@ -139,7 +193,12 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             <textarea id="description" minLength={3} maxLength={800} required value={description}
                       onChange={descriptionHandler}/>
 
-            <button type="submit">Submit</button>
+            <button
+                type="submit"
+                className={success.status ? styles.success : ""}
+                disabled={success.status}
+            >{success.status ? success.message : "Submit"}
+            </button>
         </form>
     )
 

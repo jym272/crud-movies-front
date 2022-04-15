@@ -29,12 +29,14 @@ export type GenresMap = {
     [key: number]: string
 }
 
+type time = string //1994-06-07T00:00:00Z
+
 export type MovieType = {
     id: number
     title: string
     description: string
     year?: number
-    release_date: string
+    release_date: time
     runtime: number
     rating: number
     mpaa_rating: string

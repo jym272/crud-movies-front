@@ -1,14 +1,15 @@
 import {MovieType} from "../../Types";
 import React from "react";
 import styles from "./Movie.module.scss"
+import Link from "next/link";
 
 
 export const MovieComponent = ({movie}: { movie: MovieType }) => {
 
-    const movieGenresList = Object.values(movie.genres).map((genre, index) => {
-        return <span className={styles.classification} key={index}>{genre}</span>
+    const movieGenresList = Object.keys(movie.genres).map((index) => {
+        return <span className={styles.classification} key={index}><Link
+            href={`/genres/${index}`}>{movie.genres[index as unknown as number]}</Link></span>
     })
-
     const date = new Date(movie.release_date)
     const dateString = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -19,7 +20,7 @@ export const MovieComponent = ({movie}: { movie: MovieType }) => {
 
 
     return <>
-        <h1>{movie.title}</h1>
+        <h1 className={styles.title}>{movie.title}</h1>
         <div className={styles["rating__classification"]}>
             <span>Rating: {movie.mpaa_rating}</span>
             <span>{movieGenresList}</span>
