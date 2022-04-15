@@ -17,7 +17,6 @@ export const MovieComponent = ({movie}: { movie: MovieType }) => {
         timeZone: "UTC"
     });
 
-    console.log(movie, dateString)
 
     return <>
         <h1>{movie.title}</h1>
@@ -26,16 +25,26 @@ export const MovieComponent = ({movie}: { movie: MovieType }) => {
             <span>{movieGenresList}</span>
         </div>
         <div className={styles.info}>
-            <span>Title:</span>
-            <div className={styles.content}>{movie.title}</div>
-            <span>Description:</span>
-            <div className={styles.content}>{movie.description}</div>
-            <span>Runtime</span>
-            <div className={styles.content}>{movie.runtime}</div>
-            <span>Release Date:</span>
-            <div className={styles.content}>{dateString}</div>
-            <span>Rating:</span>
-            <div className={styles.content}>{movie.rating}</div>
+            <div>
+                <span>Title:</span>
+                <span className={styles.content}>{movie.title}</span>
+            </div>
+            <div>
+                <span>Description:</span>
+                <span className={styles.content}>{movie.description}</span>
+            </div>
+            <div>
+                <span>Runtime:</span>
+                <span className={styles.content}>{movie.runtime}</span>
+            </div>
+            <div>
+                <span>Release Date:</span>
+                <span className={styles.content}>{dateString}</span>
+            </div>
+            <div>
+                <span>Rating:</span>
+                <span className={styles.content}>{movie.rating}</span>
+            </div>
         </div>
     </>
 }

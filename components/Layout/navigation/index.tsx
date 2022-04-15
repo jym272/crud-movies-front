@@ -23,6 +23,11 @@ export const Navigation = () => {
             </Link>
         </li>
         <li>
+            <Link href="/admin/movie/add">
+                <a className={context.activePage == Page.Add ? styles.active : ""}>Add Movie</a>
+            </Link>
+        </li>
+        <li>
             <Link href="/catalog">
                 <a className={context.activePage == Page.Catalog ? styles.active : ""}>Catalog</a>
             </Link>

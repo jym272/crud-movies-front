@@ -32,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         error = `Error ${response.status}, ${response.statusText}`
     }
 
+    console.log(genres)
     return {
         props: {
             genres,

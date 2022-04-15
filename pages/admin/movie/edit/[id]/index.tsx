@@ -1,24 +1,21 @@
+import {MovieType} from "../../../../../Types";
+import {AddMovieForm} from "../../../../../components";
 import React from "react";
 import {GetServerSideProps} from "next";
-import {MovieType} from "../../../Types";
-import {MovieComponent} from "../../../components";
 
-const Movie = ({movie, error}: { movie: MovieType, error: string | null }) => {
+const EditMovie = ({movie, error}: { movie: MovieType, error: string | null }) => {
 
     if (error) {
         return <div>{error}</div>
     }
-
-    return <MovieComponent movie={movie}/>
+    return <AddMovieForm movie={movie}/>
 }
 
-export default Movie;
+export default EditMovie;
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const id = context.params?.id;
-    //TODO: maybe in a future use the query along with authorization to edit the movie and avoid repeated code
-    // const queryEdit = context.query?.edit;
-    // console.log(queryEdit)
     const regex = /^\d+$/;
     if (!regex.test(id as string)) {
         return {
@@ -36,7 +33,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`
     }
-    console.log(movie)
     return {
         props: {
             movie: movie,
@@ -44,4 +40,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
 }
-
