@@ -11,7 +11,7 @@ const Genre = ({movies, genreTitle, error}: { movies: Array<MovieType>, genreTit
     }, [context])
 
     return <>
-        <ListOfMovies title={genreTitle} movies={movies} error={error}/>
+        <ListOfMovies title={genreTitle} movies={movies} error={error} path="movies"/>
     </>
 
 }

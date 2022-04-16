@@ -2,12 +2,17 @@ import {MovieType} from "../../Types";
 import Link from "next/link";
 import styles from "./ListOfMovies.module.scss"
 
-export const ListOfMovies = ({title, movies, error}: { title: string, movies: MovieType[], error: string | null }) => {
+export const ListOfMovies = ({
+                                 title,
+                                 movies,
+                                 error,
+                                 path
+                             }: { title: string, movies: MovieType[], error: string | null, path: string }) => {
 
 
     const listMoviesTitle = movies.map((movie: MovieType) => {
         return <li key={movie.id}>
-            <Link href={`/movies/${movie.id}`} passHref>
+            <Link href={`/${path}/${movie.id}`} passHref>
                 <a>{movie.title}</a>
             </Link>
         </li>

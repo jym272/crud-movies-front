@@ -37,14 +37,34 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         let timeOutId: NodeJS.Timeout
         if (success.status) {
             timeOutId = setTimeout(async () => {
-                await router.replace('/movies')
-            }, 1200)
+                await router.replace('/catalog')
+            }, 800)
         }
         return () => {
             clearTimeout(timeOutId)
         }
 
     }, [router, success])
+
+
+    const deleteMovieHandler = () => {
+        if (movie) {
+            fetch(`http://localhost:8080/v1/admin/delete?id=${movie.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                if (res.status === 200) {
+                    setSuccess({
+                        status: true,
+                        message: 'Movie deleted'
+                    })
+                }
+            })
+            //TODO: manejo completo de errores de server
+        }
+    }
 
     const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -72,7 +92,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             title: title.trim(),
             release_date: releaseDate + "T00:00:00Z",
             runtime: Number(runtime),
-            description,
+            description: description.trim(),
             rating: Number(rating),
             mpaa_rating: mpaaRatingValue,
             genres: getIDs(genresValue)
@@ -86,7 +106,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         }
         //TODO: the response can be better handled, with a status, error, loading, etc...
         // a loading bar will be awesome
-        fetch(`http://localhost:8080/v1/movie?id=${payload.id}`, postObject)
+        fetch(`http://localhost:8080/v1/admin/movie?id=${payload.id}`, postObject)
             .then(response => response.json())
             .then(data => {
                 if (data?.status === 200) {
@@ -127,7 +147,6 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         }
         return []
     }
-
 
     return (
         <form className={styles.form} onSubmit={submitFormHandler}>
@@ -193,12 +212,29 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             <textarea id="description" minLength={3} maxLength={800} required value={description}
                       onChange={descriptionHandler}/>
 
-            <button
-                type="submit"
-                className={success.status ? styles.success : ""}
-                disabled={success.status}
-            >{success.status ? success.message : "Submit"}
-            </button>
+
+            {success.status ? <p className={styles.success}>{success.message}</p> :
+                <div className={styles.buttons}>
+                    <button
+                        type="submit"
+                    >{"Submit"}
+                    </button>
+                    {movie && <>
+                        <button
+                            type="button"
+                            onClick={() => router.back()}
+                        >{"Cancel"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={deleteMovieHandler}
+                            className={styles.delete}
+                        >{"Delete"}
+                        </button>
+                    </>
+                    }
+                </div>
+            }
         </form>
     )
 

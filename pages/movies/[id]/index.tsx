@@ -36,7 +36,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`
     }
-    console.log(movie)
     return {
         props: {
             movie: movie,

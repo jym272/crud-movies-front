@@ -10,7 +10,7 @@ const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | nul
     }, [context])
 
     return <>
-        <ListOfMovies title={"Movies"} movies={movies} error={error}/>
+        <ListOfMovies title={"Movies"} movies={movies} error={error} path="movies"/>
     </>
 }
 export default Movies
