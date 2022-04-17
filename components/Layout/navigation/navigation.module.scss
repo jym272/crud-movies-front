@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  //margin-left: 10px;
+  margin-right: 20px;
   min-height: styles.$navigationHeight;
 
   background-color: styles.$backgroundColor;
@@ -50,9 +52,9 @@
     }
 
     .subMenu {
-      position: fixed;
+      position: absolute;
       //background-color: #5676c7;
-      animation: display-submenu 0.2s ease-in-out forwards;
+      animation: display-submenu 0.3s ease-in-out forwards;
 
 
     }
@@ -68,7 +70,7 @@
   }
 
   .subMenu__active {
-    position: fixed;
+    position: absolute;
     transform: translateY(7px);
     animation: display-submenu-active 0.2s ease-in-out forwards;
   }
@@ -106,7 +108,7 @@
   }
   100% {
     //translate XY
-    transform: translate(15px, 7px);
+    transform: translate(12px, 7px);
 
   }
 }

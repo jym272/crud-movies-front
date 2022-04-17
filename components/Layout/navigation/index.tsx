@@ -52,15 +52,16 @@ export const Navigation = () => {
             </Link>
         </li>
 
-        <li>
-            <Link href="/catalog">
-                <a
-                    onMouseEnter={() => setSubMenu(true)}
-                    onMouseLeave={() => setSubMenu(false)}
-                    className={context.activePage == Page.Catalog ? styles.active : ""}>Catalog</a>
-            </Link>
-            {(mountSubMenu || context.activePage == Page.Add) && subMenuJSX}
-        </li>
+        {context.jwt &&
+            <li>
+                <Link href="/catalog">
+                    <a
+                        onMouseEnter={() => setSubMenu(true)}
+                        onMouseLeave={() => setSubMenu(false)}
+                        className={context.activePage == Page.Catalog ? styles.active : ""}>Catalog</a>
+                </Link>
+                {(mountSubMenu || context.activePage == Page.Add) && subMenuJSX}
+            </li>}
 
     </nav>
 }
