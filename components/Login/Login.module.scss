@@ -11,12 +11,17 @@
 
   form {
     border: 2px solid #2d2d2d;
+    box-shadow: 0 0 10px #2d2d2d;
     padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 390px;
     background-color: styles.$backgroundColor;
+
+    div + div {
+      margin-top: 35px;
+    }
 
     h1 {
       margin-bottom: 30px;
@@ -28,15 +33,9 @@
       height: 33px;
       border: 1px solid #2d2d2d;
       margin-top: 15px;
-      margin-bottom: 20px;
+      //margin-bottom: 20px;
       padding: 0 10px;
 
-      .input__error {
-        color: red;
-        font-size: 12px;
-        margin-top: 5px;
-        border: 1px solid red;
-      }
 
     }
 
@@ -47,12 +46,14 @@
       width: 50%;
       height: 37px;
       border: 1px solid #2d2d2d;
-      margin: 20px 0;
+      margin-top: 40px;
+      margin-bottom: 20px;
       //padding: 0 25px;
       background: #2d2d2d;
       color: #fff;
       font-weight: bold;
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
       &:hover {
         background: #fff;
@@ -67,3 +68,17 @@
   }
 }
 
+.input__error {
+  color: red;
+  background-color: rgba(176, 17, 17, 0.25);
+}
+
+.input__error__msg {
+  position: absolute;
+  color: red;
+  font-size: 0.8rem;
+  padding: 7px 5px;
+  //italyc
+  font-style: italic;
+  //margin-top: 5px;
+}

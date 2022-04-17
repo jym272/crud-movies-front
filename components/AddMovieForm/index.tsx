@@ -3,10 +3,12 @@ import React, {useEffect} from "react";
 import {MovieType, MPAARating} from "../../Types";
 import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
+import {store} from "../Store";
 
 export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
 
     const router = useRouter();
+    const context = React.useContext(store);
 
     function transformDate(release_date: string): string {
         const date = release_date.split("T")[0].split("-");
@@ -97,10 +99,16 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             mpaa_rating: mpaaRatingValue,
             genres: getIDs(genresValue)
         }
+        // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+
+        //TODO: display error in screen of user, not only in console
+        //si no tengo el token en el context no puedo hacer la peticion, pero igual puedo acceder a la ruta del front
+        //por URL, validar..
         const postObject = {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${context.jwt}`
             },
             body: JSON.stringify(payload)
         }

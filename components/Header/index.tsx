@@ -9,6 +9,10 @@ export const Header = () => {
     const loginHandler = async () => {
         await router.push('/login')
     };
+    const logoutHandler = async () => {
+        context.setJwt("")
+        await router.push('/login')
+    };
 
     return <div className={styles.title}>
         <div className={styles.header}>
@@ -16,7 +20,7 @@ export const Header = () => {
                 Go watch some movies!
             </div>
             {context.jwt ?
-                <div className={styles.login}>
+                <div className={styles.login} onClick={logoutHandler}>
                     Logout
                 </div> : <div className={styles.login} onClick={loginHandler}>
                     Login
