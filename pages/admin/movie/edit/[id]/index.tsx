@@ -14,7 +14,9 @@ const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null }> =
 export default EditMovie;
 EditMovie.auth = true;
 
-
+//TODO: IMPORTANTE; la página se pre renderiza siempre (en el server), la autenticación viene luego
+//y es del lado del cliente, el códgio del cliente se puede cambiar cargando un JWT, sin embargo,
+//el server se encuentra validado. Se puede atenticar en lado del servidor usando NextAuth con useSession
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const id = context.params?.id;
     const regex = /^\d+$/;
