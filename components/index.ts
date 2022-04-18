@@ -6,3 +6,4 @@ export * from './Genres';
 export * from './ListOfMovies';
 export * from './AddMovieForm';
 export * from './Login';
+export * from './Auth';

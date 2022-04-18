@@ -1,9 +1,9 @@
 import {useContext, useEffect} from "react";
 import {ListOfMovies, store} from "../../components";
-import {MovieType, Page} from "../../Types";
+import {ComponentWithAuth, MovieType, Page} from "../../Types";
 import {GetServerSideProps} from "next";
 
-const Catalog = ({movies, error}: { movies: Array<MovieType>, error: string | null }) => {
+const Catalog: ComponentWithAuth<{ movies: Array<MovieType>, error: string | null }> = ({movies, error}) => {
     const context = useContext(store)
     useEffect(() => {
         context.setActivePage(Page.Catalog)
@@ -14,9 +14,11 @@ const Catalog = ({movies, error}: { movies: Array<MovieType>, error: string | nu
 }
 export default Catalog
 
+Catalog.auth = true
 
 //TODO: refactorizar luego, mismo contenido en catalog y movies
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
     let movies = [];
     let error = null;
 

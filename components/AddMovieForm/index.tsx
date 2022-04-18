@@ -5,6 +5,48 @@ import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
 import {store} from "../Store";
 
+type ReducerStateType = {
+    success: boolean
+    error: boolean
+    message: string
+}
+type ReducerActionType = {
+    type: "success" | "error" | "reset"
+    payload: string
+}
+
+function init(initialState: boolean): ReducerStateType {
+    return {
+        success: initialState,
+        error: initialState,
+        message: ""
+    }
+}
+
+function reducer(state: ReducerStateType, action: ReducerActionType) {
+    switch (action.type) {
+        case "success":
+            return {
+                ...state,
+                success: true,
+                error: false,
+                message: action.payload
+            };
+        case "error":
+            return {
+                ...state,
+                success: false,
+                error: true,
+                message: action.payload
+            };
+        case "reset":
+            return init(false);
+        default:
+            throw new Error();
+    }
+}
+
+
 export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
 
     const router = useRouter();
@@ -28,25 +70,26 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
     const [description, setDescription] = React.useState(initialState.description);
     const [rating, setRating] = React.useState(initialState.rating);
     const [errors, setErrors] = React.useState<Array<string>>([]);
-    //TODO: crear un dispathac para loading, error, success
+    const [state, dispatch] = React.useReducer(reducer, false, init)
 
-    const [success, setSuccess] = React.useState({
-        status: false,
-        message: ''
-    });
 
     useEffect(() => {
         let timeOutId: NodeJS.Timeout
-        if (success.status) {
+        if (state.success) {
             timeOutId = setTimeout(async () => {
                 await router.replace('/catalog')
             }, 800)
+        }
+        if (state.error) {
+            timeOutId = setTimeout(() => {
+                dispatch({type: "reset", payload: ""})
+            }, 3000)
         }
         return () => {
             clearTimeout(timeOutId)
         }
 
-    }, [router, success])
+    }, [router, state])
 
 
     const deleteMovieHandler = () => {
@@ -58,10 +101,8 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                 }
             }).then(res => {
                 if (res.status === 200) {
-                    setSuccess({
-                        status: true,
-                        message: 'Movie deleted'
-                    })
+                    dispatch({type: 'success', payload: 'Movie deleted'})
+
                 }
             })
             //TODO: manejo completo de errores de server
@@ -114,19 +155,21 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         }
         //TODO: the response can be better handled, with a status, error, loading, etc...
         // a loading bar will be awesome
+        //si la response es ok => ok
+        //si no, trato de obtener el error del server en el body, si no puedo, muestro un error genérico
         fetch(`http://localhost:8080/v1/admin/movie?id=${payload.id}`, postObject)
             .then(response => response.json())
             .then(data => {
                 if (data?.status === 200) {
-                    setSuccess({
-                        status: true,
-                        message: data.message
-                    })
+                    dispatch({type: 'success', payload: data.message})
                 } else {
                     throw new Error(data.error)
                 }
 
-            }).catch(error => console.log(error))
+            }).catch(error => {
+            dispatch({type: 'error', payload: error.message})
+            console.log(error.message)
+        })
         //redirect to home, replace history
         // router.replace('/').then(r => console.log(r))
 
@@ -221,27 +264,28 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                       onChange={descriptionHandler}/>
 
 
-            {success.status ? <p className={styles.success}>{success.message}</p> :
-                <div className={styles.buttons}>
-                    <button
-                        type="submit"
-                    >{"Submit"}
-                    </button>
-                    {movie && <>
+            {state.error ? <p className={styles["response__error"]}>{state.message}</p> :
+                state.success ? <p className={styles["response__success"]}>{state.message}</p> :
+                    <div className={styles.buttons}>
                         <button
-                            type="button"
-                            onClick={() => router.back()}
-                        >{"Cancel"}
+                            type="submit"
+                        >{"Submit"}
                         </button>
-                        <button
-                            type="button"
-                            onClick={deleteMovieHandler}
-                            className={styles.delete}
-                        >{"Delete"}
-                        </button>
-                    </>
-                    }
-                </div>
+                        {movie && <>
+                            <button
+                                type="button"
+                                onClick={() => router.back()}
+                            >{"Cancel"}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={deleteMovieHandler}
+                                className={styles.delete}
+                            >{"Delete"}
+                            </button>
+                        </>
+                        }
+                    </div>
             }
         </form>
     )

@@ -1,11 +1,17 @@
 import '../styles/globals.css'
-import type {AppProps} from 'next/app'
-import {Layout, StoreProvider} from "../components";
+import {Auth, Layout, StoreProvider} from "../components";
+import {NextComponentWithAuth} from "../Types";
 
-function MyApp({Component, pageProps}: AppProps) {
+function MyApp({Component, pageProps}: { Component: NextComponentWithAuth, pageProps: any }) {
     return <StoreProvider>
         <Layout>
-            <Component {...pageProps} />
+            {Component.auth ? (
+                <Auth>
+                    <Component {...pageProps} />
+                </Auth>
+            ) : (
+                <Component {...pageProps} />
+            )}
         </Layout>
     </StoreProvider>
 }

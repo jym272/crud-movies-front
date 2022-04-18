@@ -98,13 +98,15 @@
     background-color: rgba(255, 0, 0, 0.08);
   }
 
-  .success,
-  .success:hover {
+  .response__error,
+  .response__error:hover,
+  .response__success,
+  .response__success:hover {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    width: 20%;
+    width: 25%;
     min-width: 150px;
     align-self: center;
     color: #ffffff;
@@ -113,6 +115,13 @@
     padding: 0.58rem;
     cursor: auto;
   }
+
+  .response__error,
+  .response__error:hover {
+    width: 50%;
+    background-color: rgb(255, 0, 0);
+  }
+
 
   .buttons {
     display: flex;

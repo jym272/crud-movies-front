@@ -1,3 +1,6 @@
+import {NextComponentType, NextPageContext} from "next";
+import React from "react";
+
 export const Page = {
     Home: 'Home',
     Movies: 'Movies',
@@ -50,3 +53,14 @@ export const MPAARating = {
     R: 'R',
     NC17: 'NC17',
 }
+
+//Authentication
+export interface AuthEnabledComponentConfig {
+    auth: boolean;
+}
+
+export type ComponentWithAuth<PropsType = any> = React.FC<PropsType> &
+    AuthEnabledComponentConfig;
+
+export type NextComponentWithAuth = NextComponentType<NextPageContext, any, {}> &
+    Partial<AuthEnabledComponentConfig>;
