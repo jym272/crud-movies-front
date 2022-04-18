@@ -1,5 +1,5 @@
 import {useContext, useEffect} from "react";
-import {store} from "../components";
+import {FrontPage, store} from "../components";
 import {Page} from "../Types";
 
 const Home = () => {
@@ -7,11 +7,7 @@ const Home = () => {
     useEffect(() => {
         context.setActivePage(Page.Home)
     }, [context])
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    );
+    return <FrontPage/>
 };
 
 export default Home;

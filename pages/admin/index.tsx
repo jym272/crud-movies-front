@@ -17,6 +17,7 @@ export default Catalog
 Catalog.auth = true
 
 //TODO: refactorizar luego, mismo contenido en catalog y movies
+//TODO: IMPORTANTE; la página se pre renderiza siempre (en el server), la autenticación viene luego
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let movies = [];

@@ -12,7 +12,7 @@ const LoadingPage = () => {
     )
 }
 
-export const Auth = ({children}: { children: JSX.Element }) => {
+export const Auth = ({children, auth}: { children: JSX.Element, auth: boolean | undefined }) => {
 
     const [isAuthorized, setIsAuthorized] = useState(false)
     const [redirect, setRedirect] = useState(false)
@@ -20,6 +20,11 @@ export const Auth = ({children}: { children: JSX.Element }) => {
     const router = useRouter();
 
     useEffect(() => {
+        if (context.jwt) {
+            setIsAuthorized(true)
+            return
+        }
+
         const jwt = localStorage.getItem("jwt");
         if (jwt) {
             const item: JWTType = JSON.parse(jwt);
@@ -40,10 +45,14 @@ export const Auth = ({children}: { children: JSX.Element }) => {
         return children
     }
     if (redirect) {
-        router.push("/login");
-    } else {
-        return <LoadingPage/>
+        if (auth) {
+            router.push("/login")
+        } else {
+            return children
+        }
     }
+
+    return <LoadingPage/>
 
 }
 

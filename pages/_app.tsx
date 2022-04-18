@@ -5,13 +5,9 @@ import {NextComponentWithAuth} from "../Types";
 function MyApp({Component, pageProps}: { Component: NextComponentWithAuth, pageProps: any }) {
     return <StoreProvider>
         <Layout>
-            {Component.auth ? (
-                <Auth>
-                    <Component {...pageProps} />
-                </Auth>
-            ) : (
+            <Auth auth={Component.auth}>
                 <Component {...pageProps} />
-            )}
+            </Auth>
         </Layout>
     </StoreProvider>
 }

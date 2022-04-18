@@ -7,3 +7,4 @@ export * from './ListOfMovies';
 export * from './AddMovieForm';
 export * from './Login';
 export * from './Auth';
+export * from './FrontPage';
