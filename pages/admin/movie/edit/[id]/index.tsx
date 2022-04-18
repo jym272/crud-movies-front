@@ -1,9 +1,9 @@
-import {MovieType} from "../../../../../Types";
+import {ComponentWithAuth, MovieType} from "../../../../../Types";
 import {AddMovieForm} from "../../../../../components";
 import React from "react";
 import {GetServerSideProps} from "next";
 
-const EditMovie = ({movie, error}: { movie: MovieType, error: string | null }) => {
+const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null }> = ({movie, error}) => {
 
     if (error) {
         return <div>{error}</div>
@@ -12,6 +12,7 @@ const EditMovie = ({movie, error}: { movie: MovieType, error: string | null }) =
 }
 
 export default EditMovie;
+EditMovie.auth = true;
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

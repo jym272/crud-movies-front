@@ -54,7 +54,7 @@ export const Navigation = () => {
 
         {context.jwt &&
             <li>
-                <Link href="/catalog">
+                <Link href="/admin">
                     <a
                         onMouseEnter={() => setSubMenu(true)}
                         onMouseLeave={() => setSubMenu(false)}

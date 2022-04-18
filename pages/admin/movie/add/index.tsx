@@ -1,8 +1,8 @@
 import {useContext, useEffect} from "react";
 import {AddMovieForm, store} from "../../../../components";
-import {Page} from "../../../../Types";
+import {ComponentWithAuth, Page} from "../../../../Types";
 
-const Add = () => {
+const Add: ComponentWithAuth = () => {
 
     const context = useContext(store)
     useEffect(() => {
@@ -13,4 +13,7 @@ const Add = () => {
 
 }
 
+
 export default Add
+
+Add.auth = true

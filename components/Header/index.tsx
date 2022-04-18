@@ -11,6 +11,8 @@ export const Header = () => {
     };
     const logoutHandler = async () => {
         context.setJwt("")
+        //delete from localstorage with key jwt
+        localStorage.removeItem("jwt")
         await router.push('/login')
     };
 

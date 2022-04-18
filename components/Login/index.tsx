@@ -2,11 +2,13 @@ import styles from './Login.module.scss';
 import React, {useContext, useEffect} from "react";
 import {store} from "../Store";
 import {useRouter} from "next/router";
+import {JWTType} from "../../Types";
 
 type InputErrors = {
     email: string,
     password: string
 }
+
 
 export const Login = () => {
     const Errors: InputErrors = {
@@ -60,8 +62,6 @@ export const Login = () => {
             email: input.email,
             password: input.password,
         }
-        //use headers for authorization bearer token
-        //            headers: {'Authorization': 'Bearer ' + context.jwt},
         fetch('http://localhost:8080/v1/signin', {
             method: 'POST',
             headers: {
@@ -80,10 +80,14 @@ export const Login = () => {
                         }
                     })
                 } else {
-                    context.setJwt(data.token);
+                    context.setJwt(data.jwt);
+                    //jwt to local storage for 72 hours (72 * 60 * 60 * 1000) in milliseconds
+                    const item: JWTType = {
+                        jwt: data.jwt,
+                        expires: new Date().getTime() + (72 * 60 * 60 * 1000) //72 hours in milliseconds
+                    }
+                    localStorage.setItem('jwt', JSON.stringify(item));
                     router.push('/movies');
-                    // localStorage.setItem('token', data.token);
-                    // window.location.href = '/';
                 }
             })
             .catch(err => console.log(err));

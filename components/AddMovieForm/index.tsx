@@ -23,6 +23,15 @@ function init(initialState: boolean): ReducerStateType {
     }
 }
 
+type InitType = {
+    method: string
+    headers: {
+        'Content-Type': string
+        'Authorization': string
+    }
+    body?: string
+}
+
 function reducer(state: ReducerStateType, action: ReducerActionType) {
     switch (action.type) {
         case "success":
@@ -77,7 +86,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         let timeOutId: NodeJS.Timeout
         if (state.success) {
             timeOutId = setTimeout(async () => {
-                await router.replace('/catalog')
+                await router.replace('/admin')
             }, 800)
         }
         if (state.error) {
@@ -92,20 +101,32 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
     }, [router, state])
 
 
+    const requestToServer = (input: string, init: InitType) => {
+        fetch(input, init).then(response => response.json())
+            .then(data => {
+                if (data?.status === 200) {
+                    dispatch({type: 'success', payload: data.message})
+                } else {
+                    throw new Error(data.error)
+                }
+
+            }).catch(error => {
+            dispatch({type: 'error', payload: error.message})
+            console.log(error.message)
+        })
+
+    }
+
     const deleteMovieHandler = () => {
         if (movie) {
-            fetch(`http://localhost:8080/v1/admin/delete?id=${movie.id}`, {
+            const init = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${context.jwt}`
                 }
-            }).then(res => {
-                if (res.status === 200) {
-                    dispatch({type: 'success', payload: 'Movie deleted'})
-
-                }
-            })
-            //TODO: manejo completo de errores de server
+            }
+            requestToServer(`http://localhost:8080/v1/admin/delete?id=${movie.id}`, init)
         }
     }
 
@@ -118,7 +139,6 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         const genresOption = document.querySelector("#genres") as HTMLSelectElement
         const genresValue = Array.from(genresOption.selectedOptions).map(option => option.value)
 
-
         // const newForm = new FormData(event.target as HTMLFormElement)
         // console.log(Object.fromEntries(newForm.entries()))
         //TODO: validate the form, if it is valid, send the data to the server using an api call
@@ -128,8 +148,6 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                 return [...previousValues, 'title']
             })
         }
-
-
         const payload: MovieType = {
             id: movie ? movie.id : 0, //zero is a new movie
             title: title.trim(),
@@ -141,10 +159,6 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             genres: getIDs(genresValue)
         }
         // 'Authorization': `Bearer ${localStorage.getItem('token')}`
-
-        //TODO: display error in screen of user, not only in console
-        //si no tengo el token en el context no puedo hacer la peticion, pero igual puedo acceder a la ruta del front
-        //por URL, validar..
         const postObject = {
             method: 'PUT',
             headers: {
@@ -153,25 +167,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             },
             body: JSON.stringify(payload)
         }
-        //TODO: the response can be better handled, with a status, error, loading, etc...
-        // a loading bar will be awesome
-        //si la response es ok => ok
-        //si no, trato de obtener el error del server en el body, si no puedo, muestro un error genérico
-        fetch(`http://localhost:8080/v1/admin/movie?id=${payload.id}`, postObject)
-            .then(response => response.json())
-            .then(data => {
-                if (data?.status === 200) {
-                    dispatch({type: 'success', payload: data.message})
-                } else {
-                    throw new Error(data.error)
-                }
-
-            }).catch(error => {
-            dispatch({type: 'error', payload: error.message})
-            console.log(error.message)
-        })
-        //redirect to home, replace history
-        // router.replace('/').then(r => console.log(r))
+        requestToServer(`http://localhost:8080/v1/admin/movie?id=${payload.id}`, postObject)
 
     }
 

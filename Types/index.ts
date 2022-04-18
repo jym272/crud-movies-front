@@ -64,3 +64,9 @@ export type ComponentWithAuth<PropsType = any> = React.FC<PropsType> &
 
 export type NextComponentWithAuth = NextComponentType<NextPageContext, any, {}> &
     Partial<AuthEnabledComponentConfig>;
+
+
+export type JWTType = {
+    jwt: string
+    expires: number
+}

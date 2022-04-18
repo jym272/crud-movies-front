@@ -1,7 +1,8 @@
 import {useRouter} from "next/router";
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {store} from "../Store";
 import styles from "./Auth.module.scss"
+import {JWTType} from "../../Types";
 
 const LoadingPage = () => {
     return (
@@ -11,28 +12,38 @@ const LoadingPage = () => {
     )
 }
 
-const Redirect = () => {
+export const Auth = ({children}: { children: JSX.Element }) => {
+
+    const [isAuthorized, setIsAuthorized] = useState(false)
+    const [redirect, setRedirect] = useState(false)
+    const context = useContext(store)
     const router = useRouter();
 
     useEffect(() => {
-        // let timer: NodeJS.Timeout
-        // timer = setTimeout(() => {
-        //     router.push('/login')
-        // }, 30)
-        router.push("/login");
-        // return () => clearTimeout(timer)
-    }, [router]);
+        const jwt = localStorage.getItem("jwt");
+        if (jwt) {
+            const item: JWTType = JSON.parse(jwt);
+            const now = new Date().getTime(); //get current time in milliseconds
 
-    return <LoadingPage/>;
-};
-
-
-export const Auth = ({children}: { children: JSX.Element }) => {
-    const context = useContext(store)
-    if (context.jwt === "") {
-        return <Redirect/>;
-    } else {
+            if (now > item.expires) { //if token has expired
+                localStorage.removeItem("jwt");
+                setRedirect(true)
+            } else {
+                setIsAuthorized(true)
+                context.setJwt(item.jwt)
+            }
+        } else {
+            setRedirect(true)
+        }
+    }, [context])
+    if (isAuthorized) {
         return children
     }
+    if (redirect) {
+        router.push("/login");
+    } else {
+        return <LoadingPage/>
+    }
+
 }
 
