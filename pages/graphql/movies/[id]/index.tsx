@@ -10,7 +10,7 @@ const Movie = ({movie, error}: { movie: MovieType, error: string | null }) => {
     }
 
 
-    return <MovieComponent movie={movie}/>
+    return <MovieComponent movie={movie} genrePath={"/graphql/genres"}/>
 }
 
 export default Movie;

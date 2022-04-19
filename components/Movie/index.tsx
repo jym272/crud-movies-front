@@ -4,19 +4,19 @@ import styles from "./Movie.module.scss"
 import Link from "next/link";
 
 
-export const MovieComponent = ({movie}: { movie: MovieType }) => {
+export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath: string }) => {
 
     let movieGenresList;
     if (movie.genres) {
         movieGenresList = Object.keys(movie.genres).map((index) => {
             return <span className={styles.classification} key={index}><Link
-                href={`/genres/${index}`}>{movie.genres![index as unknown as number]}</Link></span>
+                href={`${genrePath}/${index}`}>{movie.genres![index as unknown as number]}</Link></span>
         })
     }
     if (movie.genres_list) { //graphQL
         movieGenresList = movie.genres_list.map((genre, index) => {
             return <span className={styles.classification} key={index}><Link
-                href={`/genres/${genre.id}`}>{genre.name}</Link></span> //these genre endpoints don't use graphQL //TODO: create these endpoints
+                href={`${genrePath}/${genre.id}`}>{genre.name}</Link></span> //these genre endpoints don't use graphQL //TODO: create these endpoints
         })
     }
 

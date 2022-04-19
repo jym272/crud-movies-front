@@ -9,7 +9,7 @@ const Movie = ({movie, error}: { movie: MovieType, error: string | null }) => {
         return <div>{error}</div>
     }
 
-    return <MovieComponent movie={movie}/>
+    return <MovieComponent movie={movie} genrePath={"/genres"}/>
 }
 
 export default Movie;
