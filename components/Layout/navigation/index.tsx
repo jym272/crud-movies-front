@@ -51,6 +51,11 @@ export const Navigation = () => {
                 <a className={context.activePage == Page.Genres ? styles.active : ""}>Genres</a>
             </Link>
         </li>
+        <li>
+            <Link href="/graphql">
+                <a className={context.activePage == Page.GraphQL ? styles.active : ""}>GraphQL</a>
+            </Link>
+        </li>
 
         {context.jwt &&
             <li>

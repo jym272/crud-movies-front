@@ -8,3 +8,4 @@ export * from './AddMovieForm';
 export * from './Login';
 export * from './Auth';
 export * from './FrontPage';
+export * from './GraphQL';

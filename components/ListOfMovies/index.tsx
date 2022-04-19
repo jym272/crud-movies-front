@@ -27,7 +27,7 @@ export const ListOfMovies = ({
                         {listMoviesTitle}
                     </ul>
                     :
-                    <p>No movies</p>
+                    <p className={styles["no__movies"]}>No movies</p>
             }
         </div>
     )

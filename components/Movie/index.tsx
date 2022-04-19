@@ -6,10 +6,20 @@ import Link from "next/link";
 
 export const MovieComponent = ({movie}: { movie: MovieType }) => {
 
-    const movieGenresList = Object.keys(movie.genres).map((index) => {
-        return <span className={styles.classification} key={index}><Link
-            href={`/genres/${index}`}>{movie.genres[index as unknown as number]}</Link></span>
-    })
+    let movieGenresList;
+    if (movie.genres) {
+        movieGenresList = Object.keys(movie.genres).map((index) => {
+            return <span className={styles.classification} key={index}><Link
+                href={`/genres/${index}`}>{movie.genres![index as unknown as number]}</Link></span>
+        })
+    }
+    if (movie.genres_list) { //graphQL
+        movieGenresList = movie.genres_list.map((genre, index) => {
+            return <span className={styles.classification} key={index}><Link
+                href={`/genres/${genre.id}`}>{genre.name}</Link></span> //these genre endpoints don't use graphQL //TODO: create these endpoints
+        })
+    }
+
     const date = new Date(movie.release_date)
     const dateString = date.toLocaleDateString("en-US", {
         year: "numeric",

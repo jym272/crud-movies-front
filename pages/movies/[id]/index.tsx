@@ -31,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (response.ok) {
         const data = await response.json()
+        console.log(data)
         movie = data.movie
     } else {
         context.res.statusCode = response.status

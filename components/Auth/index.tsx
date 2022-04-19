@@ -7,7 +7,7 @@ import {JWTType} from "../../Types";
 const LoadingPage = () => {
     return (
         <div className={styles["loading__container__page"]}>
-            <h1>Loading...</h1>
+            <h2>Loading...</h2>
         </div>
     )
 }

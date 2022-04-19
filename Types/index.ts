@@ -7,6 +7,7 @@ export const Page = {
     Catalog: 'Catalog',
     Genres: 'Genres',
     Add: 'Add',
+    GraphQL: 'GraphQL',
 
 }
 
@@ -43,7 +44,9 @@ export type MovieType = {
     runtime: number
     rating: number
     mpaa_rating: string
-    genres: GenresMap
+    genres?: GenresMap
+    genres_list?: Genres[]
+
 }
 
 export const MPAARating = {
