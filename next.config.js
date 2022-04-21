@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    //https://moviesplace.shop
+    //http://localhost:8080
     env: {
-        APP_API: 'http://localhost:8080',
+        APP_API: 'https://moviesplace.shop',
     },
     images: {
         domains: ["image.tmdb.org"],
