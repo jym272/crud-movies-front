@@ -1,6 +1,6 @@
 import styles from "./AddMovieForm.module.scss"
 import React, {useEffect} from "react";
-import {MovieType, MPAARating} from "../../Types";
+import {GenresMap, MovieType, MPAARating} from "../../Types";
 import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
 import {store} from "../Store";
@@ -126,7 +126,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                     'Authorization': `Bearer ${context.jwt}`
                 }
             }
-            requestToServer(`http://localhost:8080/v1/admin/delete?id=${movie.id}`, init)
+            requestToServer(`${process.env.APP_API}/v1/admin/delete?id=${movie.id}`, init)
         }
     }
 
@@ -167,7 +167,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             },
             body: JSON.stringify(payload)
         }
-        requestToServer(`http://localhost:8080/v1/admin/movie?id=${payload.id}`, postObject)
+        requestToServer(`${process.env.APP_API}/v1/admin/movie?id=${payload.id}`, postObject)
 
     }
 
@@ -190,7 +190,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
 
     const getGenres = () => {
         if (movie) {
-            return Object.values(movie.genres)
+            return Object.values(movie.genres!)
         }
         return []
     }

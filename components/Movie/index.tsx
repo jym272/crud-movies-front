@@ -2,7 +2,12 @@ import {MovieType} from "../../Types";
 import React from "react";
 import styles from "./Movie.module.scss"
 import Link from "next/link";
+import Image from "next/image";
 
+//Config: updated info for sizes and paths
+//https://api.themoviedb.org/3/configuration?api_key=f6646a0386887b9fd168de141c70bd9b
+//image size available: w92, w154, w185, w342, w500, w780, original // can change
+//also for correct path to poster: https://image.tmdb.org/t/p/w500/ // can change
 
 export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath: string }) => {
 
@@ -28,9 +33,16 @@ export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath
         timeZone: "UTC"
     });
 
+    const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
+
 
     return <>
         <h1 className={styles.title}>{movie.title}</h1>
+
+        {movie.poster && <div className={styles.ImageContainer}>
+            <Image src={imagePath} alt={movie.title} layout={"fill"} objectFit={"contain"}/>
+        </div>}
+
         <div className={styles["rating__classification"]}>
             <span>Rating: {movie.mpaa_rating}</span>
             <span>{movieGenresList}</span>

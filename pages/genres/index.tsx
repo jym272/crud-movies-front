@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let genres = [];
     let error = null;
 
-    const response = await fetch('http://localhost:8080/v1/genres')
+    const response = await fetch(process.env.APP_API + '/v1/genres')
     if (response.ok) {
         const data = await response.json()
         genres = data.genres

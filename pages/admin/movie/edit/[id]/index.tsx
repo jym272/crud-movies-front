@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     let movie: MovieType | null = null;
     let error: string | null = null
-    const response = await fetch(`http://localhost:8080/v1/movie/${id}`);
+    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}`);
 
     if (response.ok) {
         const data = await response.json()

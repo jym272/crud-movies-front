@@ -62,7 +62,7 @@ export const Login = () => {
             email: input.email,
             password: input.password,
         }
-        fetch('http://localhost:8080/v1/signin', {
+        fetch(process.env.APP_API + '/v1/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,12 +71,13 @@ export const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.errors) {
+                if (data.error) {
+                    const msg = data.error as string;
                     setErrors((prevState) => {
                         return {
                             ...prevState,
-                            email: data.errors.email,
-                            password: data.errors.password
+                            email: msg.includes("user") ? msg : prevState.email,
+                            password: msg.includes("password") ? msg : prevState.password,
                         }
                     })
                 } else {

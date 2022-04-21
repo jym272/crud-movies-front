@@ -46,6 +46,7 @@ export type MovieType = {
     mpaa_rating: string
     genres?: GenresMap
     genres_list?: Genres[]
+    poster?: string
 
 }
 

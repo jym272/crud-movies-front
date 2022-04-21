@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let genreName = "";
     let error = null;
 
-    const response = await fetch(`http://localhost:8080/v1/movies?genre_id=${genreID}`)
+    const response = await fetch(`${process.env.APP_API}/v1/movies?genre_id=${genreID}`)
     if (response.ok) {
         const data = await response.json()
         movies = Object.keys(data).map((key) => {

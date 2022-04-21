@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let data, response;
     try {
-        response = await fetch(`http://localhost:8080/v1/graphql`, requestOptions);
+        response = await fetch(`${process.env.APP_API}/v1/graphql`, requestOptions);
         data = await response.json()
         if (response.ok && data.data) {
             Object.entries(data.data).forEach(([key, value]) => {

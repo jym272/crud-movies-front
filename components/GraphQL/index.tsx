@@ -21,7 +21,7 @@ export const GraphQLComponent = () => {
             body: `{search(titleContains: "${search}"){id title}}`
         };
 
-        fetch('http://localhost:8080/v1/graphql', requestOptions)
+        fetch(process.env.APP_API + '/v1/graphql', requestOptions)
             .then(res => res.json())
             .then(data => {
                 setMoviesList(data.data.search);
@@ -41,6 +41,7 @@ export const GraphQLComponent = () => {
                 name='search'
                 value={search}
                 autoComplete={'off'}
+                maxLength={100}
                 onChange={(event) => setSearch(event.target.value)}
             />
         </div>
