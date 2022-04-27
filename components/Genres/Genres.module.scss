@@ -1,3 +1,4 @@
+.genres__darkMode,
 .genres {
   position: relative;
   display: grid;
@@ -24,5 +25,11 @@
     background-color: white;
     color: black;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.0);
+  }
+}
+
+.genres__darkMode{
+  a {
+    border: 1px solid #ffffff;
   }
 }

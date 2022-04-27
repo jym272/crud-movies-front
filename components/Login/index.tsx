@@ -94,7 +94,7 @@ export const Login = () => {
             .catch(err => console.log(err));
     }
 
-    return <div className={styles["form__container"]}>
+    return <div  className={ context.darkMode ? styles["form__container__darkMode"]:styles["form__container"] }>
         <form onSubmit={loginSubmitHandler}>
             <h1>Login</h1>
             <div>
@@ -141,6 +141,9 @@ export const Login = () => {
             </div>
 
             <button type="submit">Submit</button>
+            <div>
+                Continue as a guest
+            </div>
         </form>
     </div>
 };

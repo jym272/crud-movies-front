@@ -1,8 +1,9 @@
 import {MovieType} from "../../Types";
-import React from "react";
+import React, {useContext} from "react";
 import styles from "./Movie.module.scss"
 import Link from "next/link";
 import Image from "next/image";
+import {store} from "../Store";
 
 //Config: updated info for sizes and paths
 //https://api.themoviedb.org/3/configuration?api_key=f6646a0386887b9fd168de141c70bd9b
@@ -34,9 +35,10 @@ export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath
     });
 
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
+    const context = useContext(store)
 
 
-    return <>
+    return <div className={ context.darkMode ? styles.movie__darkMode:styles.movie }>
         <h1 className={styles.title}>{movie.title}</h1>
 
         {movie.poster && <div className={styles.ImageContainer}>
@@ -69,6 +71,6 @@ export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath
                 <span className={styles.content}>{movie.rating}</span>
             </div>
         </div>
-    </>
+    </div>
 }
 

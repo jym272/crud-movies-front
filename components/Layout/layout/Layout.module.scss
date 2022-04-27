@@ -1,11 +1,19 @@
+@use '../../../styles';
+
+.content__darkMode,
 .content {
   display: grid;
   grid-template-columns: 1fr 6fr;
-
   background-color: #ffffff;
 
   .children {
     padding: 2rem;
   }
+
+}
+
+
+.content__darkMode{
+  background-color: styles.$backgroundContentColor;
 
 }

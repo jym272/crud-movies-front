@@ -1,6 +1,8 @@
 import {MovieType} from "../../Types";
 import Link from "next/link";
 import styles from "./ListOfMovies.module.scss"
+import {store} from "../Store";
+import {useContext} from "react";
 
 export const ListOfMovies = ({
                                  title,
@@ -9,6 +11,7 @@ export const ListOfMovies = ({
                                  path
                              }: { title: string, movies: MovieType[], error: string | null, path: string }) => {
 
+    const context = useContext(store);
 
     const listMoviesTitle = movies.map((movie: MovieType) => {
         return <li key={movie.id}>
@@ -19,7 +22,7 @@ export const ListOfMovies = ({
     })
 
     return (
-        <div>
+        <div className={ context.darkMode ? styles.movies__darkMode:styles.movies }>
             <h1>{title}</h1>
             {error ? <p>{error}</p> :
                 listMoviesTitle.length > 0 ?

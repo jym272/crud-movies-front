@@ -1,5 +1,5 @@
 import styles from "./AddMovieForm.module.scss"
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {GenresMap, MovieType, MPAARating} from "../../Types";
 import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
@@ -196,7 +196,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
     }
 
     return (
-        <form className={styles.form} onSubmit={submitFormHandler}>
+        <form className={ context.darkMode ? styles.form__darkMode:styles.form } onSubmit={submitFormHandler}>
             <label htmlFor="title">Title</label>
             <input type="text" id="title"
                    value={title}

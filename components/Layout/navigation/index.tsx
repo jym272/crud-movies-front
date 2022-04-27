@@ -35,7 +35,7 @@ export const Navigation = () => {
     </Link>
 
 
-    return <nav className={styles.navigation}>
+    return <nav className={ context.darkMode ? styles.navigation__darkMode:styles.navigation }>
         <li>
             <Link href="/">
                 <a className={context.activePage == Page.Home ? styles.active : ""}>Home</a>
