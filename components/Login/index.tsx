@@ -28,6 +28,40 @@ export const Login = () => {
     }, [router])
 
 
+    const loginUser = (user: { email: string, password: string }) => {
+        fetch(process.env.APP_API + '/v1/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    const msg = data.error as string;
+                    setErrors((prevState) => {
+                        return {
+                            ...prevState,
+                            email: msg.includes("user") ? msg : prevState.email,
+                            password: msg.includes("password") ? msg : prevState.password,
+                        }
+                    })
+                } else {
+                    context.setJwt(data.jwt);
+                    //jwt to local storage for 72 hours (72 * 60 * 60 * 1000) in milliseconds
+                    const item: JWTType = {
+                        jwt: data.jwt,
+                        expires: new Date().getTime() + (72 * 60 * 60 * 1000) //72 hours in milliseconds
+                    }
+                    localStorage.setItem('jwt', JSON.stringify(item));
+                    router.push('/movies');
+                }
+            })
+            .catch(err => console.log(err));
+
+    }
+
     const loginSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         //validation
@@ -62,39 +96,19 @@ export const Login = () => {
             email: input.email,
             password: input.password,
         }
-        fetch(process.env.APP_API + '/v1/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.error) {
-                    const msg = data.error as string;
-                    setErrors((prevState) => {
-                        return {
-                            ...prevState,
-                            email: msg.includes("user") ? msg : prevState.email,
-                            password: msg.includes("password") ? msg : prevState.password,
-                        }
-                    })
-                } else {
-                    context.setJwt(data.jwt);
-                    //jwt to local storage for 72 hours (72 * 60 * 60 * 1000) in milliseconds
-                    const item: JWTType = {
-                        jwt: data.jwt,
-                        expires: new Date().getTime() + (72 * 60 * 60 * 1000) //72 hours in milliseconds
-                    }
-                    localStorage.setItem('jwt', JSON.stringify(item));
-                    router.push('/movies');
-                }
-            })
-            .catch(err => console.log(err));
+        loginUser(user);
     }
 
-    return <div  className={ context.darkMode ? styles["form__container__darkMode"]:styles["form__container"] }>
+    const guestSubmitHandler = () => {
+        const user = {
+            email: "jym272@gmail.com",
+            password: "password",
+        }
+        loginUser(user);
+
+    }
+
+    return <div className={context.darkMode ? styles["form__container__darkMode"] : styles["form__container"]}>
         <form onSubmit={loginSubmitHandler}>
             <h1>Login</h1>
             <div>
@@ -141,7 +155,7 @@ export const Login = () => {
             </div>
 
             <button type="submit">Submit</button>
-            <div>
+            <div className={styles.guest} onClick={guestSubmitHandler}>
                 Continue as a guest
             </div>
         </form>

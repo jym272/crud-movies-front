@@ -63,7 +63,7 @@ export const Navigation = () => {
                     <a
                         onMouseEnter={() => setSubMenu(true)}
                         onMouseLeave={() => setSubMenu(false)}
-                        className={context.activePage == Page.Catalog ? styles.active : ""}>Catalog</a>
+                        className={context.activePage == Page.Catalog ? styles.active : ""}>Edit</a>
                 </Link>
                 {(mountSubMenu || context.activePage == Page.Add) && subMenuJSX}
             </li>}

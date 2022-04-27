@@ -68,6 +68,18 @@
 
     }
   }
+
+
+  .guest{
+    align-self: center;
+    font-style: italic;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    &:hover{
+      color: darkgreen;
+      text-shadow: 0 0 5px darkgreen;
+    }
+  }
 }
 
 .input__error {
@@ -91,6 +103,13 @@
     box-shadow: 0 0 10px #2d2d2d;
     background-color: black;
     color:  styles.$backgroundColor;
+  }
+
+  .guest{
+    &:hover{
+      color: #2d2d2d;
+      text-shadow: 0 0 5px #2d2d2d;
+    }
   }
 
 }
