@@ -47,6 +47,11 @@ export const Navigation = () => {
             </Link>
         </li>
         <li>
+            <Link href="/about">
+                <a className={context.activePage == Page.About ? styles.active : ""}>About</a>
+            </Link>
+        </li>
+        <li>
             <Link href="/genres">
                 <a className={context.activePage == Page.Genres ? styles.active : ""}>Genres</a>
             </Link>

@@ -8,6 +8,7 @@ export const Page = {
     Genres: 'Genres',
     Add: 'Add',
     GraphQL: 'GraphQL',
+    About: 'About',
 
 }
 
