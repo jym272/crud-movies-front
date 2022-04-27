@@ -10,6 +10,13 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2);
+  a{
+    color: #0000EE;
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    &:hover{
+      color: #3f3fff;
+    }
+  }
 }
 .about__darkMode{
   background-color: #000;
