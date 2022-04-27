@@ -1,4 +1,4 @@
-This is the frontEnd from the CRUD app [Movies](https://moviesplace.shop/).
+This is the frontEnd for the CRUD app [Movies](https://moviesplace.shop/).
 ## Getting Started
 
 Run the development server:
