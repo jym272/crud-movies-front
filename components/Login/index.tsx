@@ -2,7 +2,8 @@ import styles from './Login.module.scss';
 import React, {useContext, useEffect} from "react";
 import {store} from "../Store";
 import {useRouter} from "next/router";
-import {JWTType} from "../../Types";
+import {signIn} from "next-auth/react";
+import Image from "next/image";
 
 type InputErrors = {
     email: string,
@@ -48,14 +49,26 @@ export const Login = () => {
                         }
                     })
                 } else {
-                    context.setJwt(data.jwt);
-                    //jwt to local storage for 72 hours (72 * 60 * 60 * 1000) in milliseconds
-                    const item: JWTType = {
-                        jwt: data.jwt,
-                        expires: new Date().getTime() + (72 * 60 * 60 * 1000) //72 hours in milliseconds
-                    }
-                    localStorage.setItem('jwt', JSON.stringify(item));
-                    router.push('/movies');
+                    // if there is no errors means that the user exists in DB
+                    // now the jwt token is persists in the session token through the next-auth
+                    signIn<"credentials">("credentials", {
+                        email,
+                        password,
+                        redirect: false,
+                    }).then(response => {
+                        if (response!.error) { //There should be no error, the user exists in DB
+                            const msg = response!.error as string || "Something went wrong";
+                            setErrors((prevState) => {
+                                return {
+                                    ...prevState,
+                                    email: msg,
+                                    password: msg,
+                                }
+                            })
+                            return
+                        }
+                        router.push('/movies')
+                    })
                 }
             })
             .catch(err => console.log(err));
@@ -99,12 +112,15 @@ export const Login = () => {
         loginUser(user);
     }
 
-    const guestSubmitHandler = () => {
-        const user = {
-            email: "jym272@gmail.com",
-            password: "password",
-        }
-        loginUser(user);
+
+    const googleSubmitHandler = async () => {
+        signIn('google', {callbackUrl: '/movies'})
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
 
     }
 
@@ -155,8 +171,18 @@ export const Login = () => {
             </div>
 
             <button type="submit">Submit</button>
-            <div className={styles.guest} onClick={guestSubmitHandler}>
-                Continue as a guest
+
+            <div className={styles.guest} onClick={googleSubmitHandler}>
+                <div className={styles.guest__image}>
+                    <Image
+                        src="/images/google_logo.png"
+                        alt="google logo"
+                        width={24}
+                        height={24}
+                        priority={true}
+                    />
+                </div>
+                &nbsp;Log in with Google
             </div>
         </form>
     </div>

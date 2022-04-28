@@ -3,3 +3,28 @@
    sin necesidad de estar autenticado, por ahora solo para solicitar recursos
    de la aplicacion usando getsersideprops.
    Lo ideal seria usar autenticacion en el server con next auth
+2. Eliminate context, use router to path to style the active page
+
+3.You are already logged in -> style better for dark mode and in general.
+
+4.Add an animation when the user submit  and wait for the server to respond
+
+5.Usar next auth para autenticacion emaill y password
+
+6. Mostart infor del usuario al loguearse y mostrarlo en el header
+
+7. Terminar el icono de iniciar session with google
+
+
+
+
+
+...
+
+101. Si un usuario quiere agregar una pelicula que ya se encuentra en la DB,
+se le avisa y se le muestra un link.
+
+102. My favorites
+
+103. Login(style: activo)    Sign Up(style: opaco y transparente)
+     -----

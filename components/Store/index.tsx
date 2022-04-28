@@ -4,9 +4,6 @@ const defaultValue = {
     activePage: "",
     setActivePage: (page: string) => {
     },
-    jwt: "",
-    setJwt: (jwt: string) => {
-    },
     darkMode: false,
     setDarkMode: (option: boolean) => {
     },
@@ -16,7 +13,6 @@ export const store = React.createContext(defaultValue);
 
 export const StoreProvider = ({children}: { children: React.ReactNode }) => {
     const [activePage, setPage] = React.useState("");
-    const [jwt, _setJwt] = React.useState("");
     const [darkMode, _setDarkMode] = React.useState(false);
     useEffect(() => {
         const darkMode = localStorage.getItem("darkMode");
@@ -30,9 +26,6 @@ export const StoreProvider = ({children}: { children: React.ReactNode }) => {
         setPage(page);
     };
 
-    const setJwt = (jwt: string) => {
-        _setJwt(jwt);
-    };
 
     const setDarkMode = (option: boolean) => {
         //set local storage
@@ -48,8 +41,6 @@ export const StoreProvider = ({children}: { children: React.ReactNode }) => {
         <store.Provider value={{
             activePage,
             setActivePage,
-            jwt,
-            setJwt,
             darkMode,
             setDarkMode,
         }}>

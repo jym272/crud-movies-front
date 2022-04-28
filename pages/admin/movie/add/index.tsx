@@ -16,4 +16,4 @@ const Add: ComponentWithAuth = () => {
 
 export default Add
 
-Add.auth = true
+Add.auth = true //client side auth

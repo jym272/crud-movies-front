@@ -4,6 +4,7 @@ import {GenresMap, MovieType, MPAARating} from "../../Types";
 import {getIDs} from "../../utils";
 import {useRouter} from "next/router";
 import {store} from "../Store";
+import {useSession} from "next-auth/react";
 
 type ReducerStateType = {
     success: boolean
@@ -60,6 +61,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
 
     const router = useRouter();
     const context = React.useContext(store);
+    const {data: session, status} = useSession( );
 
     function transformDate(release_date: string): string {
         const date = release_date.split("T")[0].split("-");
@@ -123,7 +125,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${context.jwt}`
+                    'Authorization': `Bearer ${session?.accessToken}`
                 }
             }
             requestToServer(`${process.env.APP_API}/v1/admin/delete?id=${movie.id}`, init)
@@ -163,7 +165,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${context.jwt}`
+                'Authorization': `Bearer ${session?.accessToken}`
             },
             body: JSON.stringify(payload)
         }

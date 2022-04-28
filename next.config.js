@@ -6,6 +6,7 @@ module.exports = (phase, {defaultConfig}) => {
     const nextConfig = {
         env: {
             APP_API: 'https://api.moviesplace.shop',
+
         },
         images: {
             domains: ["image.tmdb.org"],
@@ -27,6 +28,8 @@ module.exports = (phase, {defaultConfig}) => {
             ...nextConfig,
             env: {
                 APP_API: 'http://localhost:8080',
+                GOOGLE_ID: '352060454882-qp223ohm4862v8t21g5eicnl3b2lim3s.apps.googleusercontent.com',
+                GOOGLE_SECRET: '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',
             },
         }
     }

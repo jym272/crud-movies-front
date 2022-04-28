@@ -2,6 +2,7 @@ import {ComponentWithAuth, MovieType} from "../../../../../Types";
 import {AddMovieForm} from "../../../../../components";
 import React from "react";
 import {GetServerSideProps} from "next";
+import {getSession} from "next-auth/react";
 
 const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null }> = ({movie, error}) => {
 
@@ -12,12 +13,22 @@ const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null }> =
 }
 
 export default EditMovie;
-EditMovie.auth = true;
-
-//TODO: IMPORTANTE; la página se pre renderiza siempre (en el server), la autenticación viene luego
-//y es del lado del cliente, el códgio del cliente se puede cambiar cargando un JWT, sin embargo,
-//el server se encuentra validado. Se puede atenticar en lado del servidor usando NextAuth con useSession
+EditMovie.auth = true; //client side auth
+// The authentication is given in two ways, either by the server or by the client.
+// The server is first if the client try to access de page without for the first time.
+// The page is not rendered if the user is not authenticated, if it is authenticated, the page is rendered.
+// and client side authentication is done by the Auth component.
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context)  //server side auth
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        }
+    }
+
     const id = context.params?.id;
     const regex = /^\d+$/;
     if (!regex.test(id as string)) {

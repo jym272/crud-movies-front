@@ -3,8 +3,10 @@ import styles from "./navigation.module.scss"
 import {useContext, useEffect, useState} from "react";
 import {store} from "../../Store";
 import {Page} from "../../../Types";
+import {useSession} from "next-auth/react";
 
 export const Navigation = () => {
+    const {data: session, status} = useSession();
     const context = useContext(store)
     const [subMenu, setSubMenu] = useState(false)
     const [mountSubMenu, setMountSubMenu] = useState(false)
@@ -23,6 +25,7 @@ export const Navigation = () => {
 
 
     }, [subMenu])
+    const isAuthenticated = !!session?.user
 
 
     const subMenuJSX = <Link href="/admin/movie/add">
@@ -62,7 +65,7 @@ export const Navigation = () => {
             </Link>
         </li>
 
-        {context.jwt &&
+        {isAuthenticated &&
             <li>
                 <Link href="/admin">
                     <a
