@@ -16,9 +16,6 @@ export default Movie;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const id = context.params?.id;
-    //TODO: maybe in a future use the query along with authorization to edit the movie and avoid repeated code
-    // const queryEdit = context.query?.edit;
-    // console.log(queryEdit)
     const regex = /^\d+$/;
     if (!regex.test(id as string)) {
         return {

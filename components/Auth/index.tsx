@@ -1,17 +1,9 @@
 import {useRouter} from "next/router";
-import React, {useContext, useEffect, useState} from "react";
-import {store} from "../Store";
-import styles from "./Auth.module.scss"
-import {JWTType} from "../../Types";
+import React from "react";
 import {useSession} from "next-auth/react";
+import {LoadingPage} from "../LoadingPage";
 
-const LoadingPage = () => {
-    return (
-        <div className={styles["loading__container__page"]}>
-            <h2>Loading...</h2>
-        </div>
-    )
-}
+
 export const Auth = ({children}: { children: JSX.Element }) => {
     const router = useRouter();
     const {data: session, status} = useSession({

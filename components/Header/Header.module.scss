@@ -3,7 +3,7 @@
 .title__darkMode,
 .title {
   font-size: 1.5em;
-  font-weight: bold;
+  //font-weight: bold;
   color: #000000;
   text-align: left;
   background-color: styles.$backgroundColor;
@@ -22,10 +22,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    min-height: 50px;
 
 
-
-    .darkMode{
+    .darkMode {
       display: flex;
       align-items: center;
       padding: 0.2em;
@@ -39,12 +39,54 @@
 
     }
 
+    .hero {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
+
+      background: rgba(70, 69, 69, 0.18);
+
+      img{
+        border-radius: 50%;
+      }
+
+      .info{
+        display: flex;
+        flex-direction: column;
+        //justify-content: flex-end;
+        //align-items: center;
+        margin-left: 0.4em;
+        margin-right: 0.8em;
+
+        .legend {
+          font-size: 0.5em;
+        }
+
+        .email {
+          font-size: 0.57em;
+          font-weight: bold;
+
+        }
+      }
+
+
+      &:hover {
+        //cursor: pointer;
+        //background-color: rgba(234, 234, 234, 0.8);
+        //border-radius: 50%;
+      }
+
+    }
+
     .login {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
       margin-right: 1.0em;
+      font-weight: bold;
       cursor: pointer;
       border: 1px solid #000000;
       font-size: 1.0rem;
@@ -68,7 +110,7 @@
 
 }
 
-.title__darkMode{
+.title__darkMode {
   color: styles.$backgroundColor;
   text-align: left;
   background-color: #000000;
@@ -93,13 +135,16 @@
       }
     }
 
-    .darkMode{
+    .darkMode {
 
       &:hover {
         background-color: rgba(234, 234, 234, 0.3);
       }
 
 
+    }
+    .hero {
+      background: rgba(70, 69, 69, 0.59);
     }
 
   }

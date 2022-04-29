@@ -10,3 +10,4 @@ export * from './Auth';
 export * from './FrontPage';
 export * from './GraphQL';
 export * from './About';
+export * from './LoadingPage';

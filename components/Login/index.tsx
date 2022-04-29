@@ -22,6 +22,8 @@ export const Login = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState<InputErrors>(Errors);
+    const [signUp, setSignUp] = React.useState(false);
+    const [loginAnimationStyle, setLoginAnimationStyle] = React.useState(styles.line__without__animation);
 
     useEffect(() => {
         // Prefetch the movies page
@@ -124,9 +126,22 @@ export const Login = () => {
 
     }
 
+
+    const signUpHandler = () => {
+        setLoginAnimationStyle(styles.line)
+        setSignUp(true);
+    }
+
     return <div className={context.darkMode ? styles["form__container__darkMode"] : styles["form__container"]}>
         <form onSubmit={loginSubmitHandler}>
-            <h1>Login</h1>
+            <div className={styles.header}>
+                <h1 className={signUp ? styles.blur : ""} onClick={setSignUp.bind(this, false)}>Login</h1>
+                <h1 className={signUp ? "" : styles.blur} onClick={signUpHandler}>Sign Up</h1>
+            </div>
+            <div className={signUp ? styles["line__signUp"] : loginAnimationStyle}>
+                {}
+            </div>
+
             <div>
                 <label htmlFor="InputEmail">Email address:</label>
                 <input
@@ -172,8 +187,8 @@ export const Login = () => {
 
             <button type="submit">Submit</button>
 
-            <div className={styles.guest} onClick={googleSubmitHandler}>
-                <div className={styles.guest__image}>
+            <div className={styles.google} onClick={googleSubmitHandler}>
+                <div className={styles.google__image}>
                     <Image
                         src="/images/google_logo.png"
                         alt="google logo"

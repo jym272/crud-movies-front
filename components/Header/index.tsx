@@ -3,9 +3,10 @@ import {store} from "../Store";
 import {useContext} from "react";
 import {useRouter} from "next/router";
 import {signOut, useSession} from "next-auth/react";
+import Image from "next/image";
 
 export const Header = () => {
-    const { data: session, status } = useSession()
+    const {data: session, status} = useSession()
     const context = useContext(store);
     const router = useRouter()
     const loginHandler = async () => {
@@ -15,8 +16,13 @@ export const Header = () => {
         await signOut({callbackUrl: '/home'})
     };
 
-    const isAutheticated = !!session?.user
-    return <div className={ context.darkMode ? styles.title__darkMode:styles.title }>
+    const isAuthenticated = !!session?.user
+    console.log(session?.user)
+
+    const imageURL = session?.user?.image as string
+
+
+    return <div className={context.darkMode ? styles.title__darkMode : styles.title}>
         <div className={styles.header}>
             <div>
                 Go watch some movies!
@@ -37,10 +43,16 @@ export const Header = () => {
                     </svg>}
             </div>
 
-
-            {isAutheticated ?
-                <div className={styles.login} onClick={logoutHandler}>
-                    Logout
+            {isAuthenticated ?
+                <div className={styles.hero}>
+                    {session?.user?.image &&<Image src={imageURL} width={40} height={40} alt="client image"/>}
+                    <div className={styles.info}>
+                        <span className={styles.legend}>Signed in as</span>
+                        <span className={styles.email}>{session?.user?.email}</span>
+                    </div>
+                    <div className={styles.login} onClick={logoutHandler}>
+                        Logout
+                    </div>
                 </div> : <div className={styles.login} onClick={loginHandler}>
                     Login
                 </div>}

@@ -1,13 +1,24 @@
 import {Login} from "../../components";
-import {useSession} from "next-auth/react";
+import {getSession} from "next-auth/react";
+import {GetServerSideProps} from "next";
 
 const LoginPage = () => {
-    const {data: session, status} = useSession()
-    const isAuthenticated = !!session?.user
-    if (isAuthenticated) {
-        return <div>You are already logged in</div>
-    }
     return <Login/>
-
 }
 export default LoginPage
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+    const session = await getSession(context)  //server side auth
+    if (session) {
+        return {
+            redirect: {
+                destination: '/movies',
+                permanent: false,
+            },
+        }
+    }
+    return {
+        props: {}
+    }
+}

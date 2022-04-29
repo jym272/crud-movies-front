@@ -9,7 +9,7 @@ module.exports = (phase, {defaultConfig}) => {
 
         },
         images: {
-            domains: ["image.tmdb.org"],
+            domains: ["image.tmdb.org", "lh3.googleusercontent.com"],
         },
         reactStrictMode: true,
         async redirects() {
