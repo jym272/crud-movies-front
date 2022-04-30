@@ -17,7 +17,6 @@ export const Header = () => {
     };
 
     const isAuthenticated = !!session?.user
-    console.log(session?.user)
 
     const imageURL = session?.user?.image as string
 

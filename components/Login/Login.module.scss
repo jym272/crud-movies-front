@@ -21,36 +21,60 @@
     background-color: styles.$backgroundColor;
     color: black;
 
-    .header{
+
+    .header {
       display: flex;
       justify-content: space-between;
-      h1{
+
+      .new__user {
+        position: absolute;
+        color: green;
+        font-size: 0.8rem;
+        font-style: italic;
+        transform: translateY(70px);
+        animation: vanish 3s ease-out infinite;
+
+        @keyframes vanish {
+          0% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
+
+      }
+
+      h1 {
         padding: 0;
         margin-top: 0.4em;
         margin-bottom: 0.3em;
         cursor: pointer;
         user-select: none;
         transition: all 1.1s cubic-bezier(0.55, 0.8, 0.25, 1);
-        &:active{
+
+        &:active {
           transform: scale(0.95);
           text-shadow: 0 0 5px #2d2d2d;
         }
       }
-      .blur{
+
+      .blur {
         transition: all 1.9s cubic-bezier(0.25, 0.8, 0.25, 1);
         color: rgba(31, 31, 31, 0.35);
 
       }
 
     }
+
     .line__signUp,
     .line__without__animation,
-    .line{
+    .line {
       width: 40%;
-      padding:1px;
+      padding: 1px;
       margin: 0;
       background: black;
-      animation: translate-in- 0.8s ease-in-out forwards ;
+      animation: translate-in- 0.8s ease-in-out forwards;
 
       @keyframes translate-in- {
         0% {
@@ -62,14 +86,16 @@
       }
 
 
-
     }
-    .line__without__animation{
+
+    .line__without__animation {
       animation: none;
     }
-    .line__signUp{
-      animation: translate-in-x  0.8s ease-in-out forwards;
+
+    .line__signUp {
+      animation: translate-in-x 0.8s ease-in-out forwards;
     }
+
     @keyframes translate-in-x {
       0% {
         transform: translateX(0);
@@ -80,7 +106,7 @@
     }
 
 
-    div + div {
+    > div + div {
       margin-top: 35px;
     }
 
@@ -97,6 +123,32 @@
       //margin-bottom: 20px;
       padding: 0 10px;
 
+
+    }
+
+    .password {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      .image__container {
+        user-select: none;
+        margin-left: 3px;
+        margin-top: 15px;
+        margin-bottom: 0;
+        border: 2px solid #2d2d2d;
+        background: white;
+        cursor: pointer;
+        transition: all 1.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+        &:hover {
+          background: black;
+
+          img {
+            filter: invert(100%);
+          }
+        }
+      }
 
     }
 
@@ -127,10 +179,22 @@
       }
 
     }
+
+    .button__disabled {
+      background: rgba(45, 45, 45, 0.1);
+      color: #000000;
+      cursor: not-allowed;
+
+      &:active {
+        box-shadow: none;
+      }
+    }
+
+
   }
 
 
-  .google{
+  .google {
     font-size: 0.9em;
     display: flex;
     flex-direction: row;
@@ -143,19 +207,22 @@
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     padding: 5px 5px;
     border-radius: 8px;
-    color:white;
-    &:hover{
+    color: white;
+
+    &:hover {
       background-color: #004ee1;
       //color: darkgreen;
       //text-shadow: 0 0 5px darkgreen;
     }
+
     &:active {
       box-shadow: 0px 0px 5px 1px rgb(0, 0, 0);
     }
 
 
   }
-  .google__image{
+
+  .google__image {
     background-color: white;
     padding: 3px 2px 0px 2px;
     //width: 30px;
@@ -169,22 +236,44 @@
   background-color: rgba(176, 17, 17, 0.25);
 }
 
+.input__error__msg__relative,
 .input__error__msg {
   position: absolute;
+  max-width: 310px;
   color: red;
   font-size: 0.8rem;
-  padding: 7px 5px;
-  //italyc
+  padding: 7px 5px 0px 5px;
   font-style: italic;
   //margin-top: 5px;
 }
 
-.form__container__darkMode{
+.input__error__msg__relative {
+  position: relative;
+}
+
+.form__container__darkMode {
   form {
     border: 2px solid #ffffff;
     box-shadow: 0 0 10px #2d2d2d;
     background-color: black;
-    color:  styles.$backgroundColor;
+    color: styles.$backgroundColor;
+
+
+    .header {
+
+      .blur {
+        transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        color: rgba(130, 130, 130, 0.28);
+
+      }
+
+    }
+
+    .line__signUp,
+    .line__without__animation,
+    .line {
+      background: white;
+    }
 
     button {
       border: 1px solid #ffffff;
@@ -193,6 +282,16 @@
         box-shadow: 0px 0px 5px 1px rgb(255, 255, 255);
       }
 
+    }
+
+    .button__disabled {
+      background: rgba(236, 236, 236, 0.47);
+      color: #ffffff;
+      cursor: not-allowed;
+
+      &:active {
+        box-shadow: none;
+      }
     }
 
 
@@ -204,7 +303,8 @@
     &:hover {
       background-color: #004ee1;
     }
-    &:active{
+
+    &:active {
       box-shadow: 0px 0px 5px 1px rgb(255, 255, 255);
 
     }

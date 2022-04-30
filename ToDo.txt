@@ -10,6 +10,10 @@
 
 5. sign up new user validate everything
 
+6. el usuario de google y de email mismo username???' en el server
+
+7.
+
 
 
 
@@ -24,5 +28,3 @@ se le avisa y se le muestra un link.
 
 102. My favorites
 
-103. Login(style: activo)    Sign Up(style: opaco y transparente)
-     -----

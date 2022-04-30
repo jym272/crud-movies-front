@@ -13,6 +13,8 @@ export const Page = {
 }
 
 
+
+
 export const GenresModel: Genres[] = [
     {id: 3, name: 'Action'},
     {id: 7, name: 'Adventure'},

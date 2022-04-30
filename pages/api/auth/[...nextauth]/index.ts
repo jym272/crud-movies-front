@@ -65,7 +65,6 @@ export default NextAuth({
             // }
         },
         async jwt({ token, account, user }) {
-            // console.log("JWT", token)
             //The arguments user, account, profile and isNewUser are only passed the first time this callback is called
             // on a new session, after the user signs in. In subsequent calls, only token will be available.
 
@@ -80,13 +79,14 @@ export default NextAuth({
                 }
 
                 if(account.provider === "google" ){
-                    console.log(user) //obtain info from user object for the backend
                     const user_ = { //este user existe en el backend
                         email: "jym272@gmail.com",
                         password: "password",
                     }
+                    console.log("user",user)
                     //busco el token en el backend, si es un usuario nuevo, lo creo
 
+                    //TODO: en el backend, si el usuario no existe, lo creo
                     const response = await fetch(process.env.APP_API + '/v1/signin', {
                         method: 'POST',
                         headers: {
