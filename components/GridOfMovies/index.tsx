@@ -2,6 +2,7 @@ import {MovieType} from "../../Types";
 import Image from 'next/image';
 import styles from './GridOfMovies.module.scss'
 import {useRouter} from "next/router";
+import {FavButton} from "../FavButton/FavButton";
 
 
 //Config: updated info for sizes and paths
@@ -18,7 +19,7 @@ export const GridOfMovies = ({
 
 
     const goToMovieHandler = (movieId: number) => {
-        router.push(`/graphql/movies/${movieId}`)
+        // router.push(`/graphql/movies/${movieId}`)
     }
 
 
@@ -29,8 +30,10 @@ export const GridOfMovies = ({
 
             {movie.poster ?
                 <>
-                    <Image src={imagePath} alt={movie.title} layout={"fill"}/>
-                    <div className={styles["toggle__favorite__handler"]}>{}</div>
+                    {/*<Image src={imagePath} alt={movie.title} layout={"fill"}/>*/}
+                    {/*<div className={styles.fav}>*/}
+                        <FavButton/>
+                    {/*</div>*/}
 
                 </>
                 :
