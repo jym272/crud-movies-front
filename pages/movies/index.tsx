@@ -2,7 +2,6 @@ import {useContext, useEffect} from "react";
 import {ListOfMovies, store} from "../../components";
 import {MovieType, Page} from "../../Types";
 import {GetServerSideProps} from "next";
-import {useSession} from "next-auth/react";
 
 const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | null }) => {
     const context = useContext(store)

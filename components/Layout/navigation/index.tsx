@@ -72,8 +72,8 @@ export const Navigation = () => {
 
         {isAuthenticated &&<div className={styles["authenticated__menus"]}>
             <li>
-                <Link href="/fav">
-                    <a className={context.activePage == Page.Fav ? styles.active : ""}>Fav</a>
+                <Link href="/favorites">
+                    <a className={context.activePage == Page.Fav ? styles.active : ""}>Favorites</a>
                 </Link>
             </li>
             <li>

@@ -3,28 +3,16 @@
    sin necesidad de estar autenticado, por ahora solo para solicitar recursos
    de la aplicacion usando getsersideprops.
    Lo ideal seria usar autenticacion en el server con next auth
-2. Eliminate context, use router to path to style the active page
 
 
 4.Add an animation when the user submit  and wait for the server to respond
 
-5. sign up new user validate everything
 
-6. el usuario de google y de email mismo username???' en el server
 
-7.
+7. Cancel Button and navigation bwtween movies pagfes
 
 
 
 
 
-//código de back
-
-
-...
-
-101. Si un usuario quiere agregar una pelicula que ya se encuentra en la DB,
-se le avisa y se le muestra un link.
-
-102. My favorites
 

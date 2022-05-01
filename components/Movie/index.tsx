@@ -1,16 +1,20 @@
 import {MovieType} from "../../Types";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import styles from "./Movie.module.scss"
 import Link from "next/link";
 import Image from "next/image";
 import {store} from "../Store";
+import {useSession} from "next-auth/react";
 
 //Config: updated info for sizes and paths
 //https://api.themoviedb.org/3/configuration?api_key=f6646a0386887b9fd168de141c70bd9b
 //image size available: w92, w154, w185, w342, w500, w780, original // can change
 //also for correct path to poster: https://image.tmdb.org/t/p/w500/ // can change
 
-export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath: string }) => {
+export const MovieComponent = ({movie, genrePath, isFav}: { movie: MovieType, genrePath: string, isFav:boolean }) => {
+    const {data: session, status} = useSession();
+    const context = useContext(store)
+    const [isFavorite, setIsFavorite] = React.useState(isFav);
 
     let movieGenresList;
     if (movie.genres) {
@@ -35,11 +39,54 @@ export const MovieComponent = ({movie, genrePath}: { movie: MovieType, genrePath
     });
 
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
-    const context = useContext(store)
+
+    const addToFavHandler = async () => {
+        if (session && session.user) {
+            if (isFavorite){ //remove from favorites
+                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=remove`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${session.accessToken}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data == "removed") {
+                            setIsFavorite(false)
+                        } else {
+                            setIsFavorite(true)
+                        }
+                    }).catch(err => console.log(err))
+
+            }else{ //add to favorites
+                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=add`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${session.accessToken}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data == "added") {
+                            setIsFavorite(true)
+                        } else {
+                            setIsFavorite(false)
+                        }
+                    }).catch(err => console.log(err))
+
+            }
+
+        }
+    }
 
 
-    return <div className={ context.darkMode ? styles.movie__darkMode:styles.movie }>
-        <h1 className={styles.title}>{movie.title}</h1>
+    return <div className={context.darkMode ? styles.movie__darkMode : styles.movie}>
+        <div className={styles.header}>
+            <h1 className={styles.title}>{movie.title}</h1>
+            {session && <div className={styles.fav} onClick={addToFavHandler}>{isFavorite?"fav":"noFav"}</div>}
+        </div>
 
         {movie.poster && <div className={styles.ImageContainer}>
             <Image src={imagePath} alt={movie.title} layout={"fill"} objectFit={"contain"}/>

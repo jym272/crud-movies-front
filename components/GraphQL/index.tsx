@@ -4,11 +4,11 @@ import {ListOfMovies} from "../ListOfMovies";
 import styles from "./GraphQL.module.scss"
 
 
-export const GraphQLComponent = () => {
+export const GraphQLComponent = ({list, error:error_}:{list:Array<MovieType>, error:string|null}) => {
 
     const [search, setSearch] = useState("");
-    const [moviesList, setMoviesList] = useState<Array<MovieType>>([]);
-    const [error, setError] = useState("");
+    const [moviesList, setMoviesList] = useState<Array<MovieType>>(list);
+    const [error, setError] = useState<string|null>(error_);
 
 
     useEffect(() => {
