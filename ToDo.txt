@@ -10,6 +10,7 @@
 
 
 7. Cancel Button and navigation bwtween movies pagfes
+8. Back button
 
 
 

@@ -1,5 +1,5 @@
 import {useContext, useEffect} from "react";
-import {ListOfMovies, store} from "../../components";
+import {GridOfMovies, ListOfMovies, store} from "../../components";
 import {MovieType, Page} from "../../Types";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
@@ -16,7 +16,7 @@ const FavPage = ({movies, error}: { movies: Array<MovieType>, error: string | nu
     //ojo con el path, tiene que ser autenticado dentro de favorites
     // TODO:o puedo usar la ruta de graphql, pensar!!
     return <>
-        <ListOfMovies title={"Favorite movies"} movies={movies} error={error} path="movies"/>
+        <GridOfMovies movies={movies} error={error}/>
     </>
 }
 
@@ -60,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             error = error + `: ${e.message}`
         }
     }
+    console.log(movies)
     return {
         props: {
             movies,
