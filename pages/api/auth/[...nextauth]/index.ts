@@ -79,15 +79,10 @@ export default NextAuth({
                 }
 
                 if(account.provider === "google" ){
-                    const user_ = { //este user existe en el backend
-                        email: "jym272@gmail.com",
-                        password: "password",
+                    const user_ = {
+                        email: user.email,
                     }
-                    console.log("user",user)
-                    //busco el token en el backend, si es un usuario nuevo, lo creo
-
-                    //TODO: en el backend, si el usuario no existe, lo creo
-                    const response = await fetch(process.env.APP_API + '/v1/signin', {
+                    const response = await fetch(process.env.APP_API + '/v1/signin?google=true', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

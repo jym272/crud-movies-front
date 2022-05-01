@@ -9,6 +9,7 @@ export const Page = {
     Add: 'Add',
     GraphQL: 'GraphQL',
     About: 'About',
+    Fav: 'fav',
 
 }
 

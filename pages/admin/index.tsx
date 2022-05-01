@@ -10,7 +10,7 @@ const Catalog: ComponentWithAuth<{ movies: Array<MovieType>, error: string | nul
         context.setActivePage(Page.Catalog)
     }, [context])
     return <>
-        <ListOfMovies title={"Edit Movies"} movies={movies} error={error} path="admin/movie/edit"/>
+        <ListOfMovies title={"Edit My Movies"} movies={movies} error={error} path="admin/movie/edit"/>
     </>
 }
 export default Catalog
@@ -35,7 +35,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let movies = [];
     let error = null;
 
-    const response = await fetch(process.env.APP_API + '/v1/movies')
+    const init = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.accessToken}`
+        }
+    }
+
+    const response = await fetch(process.env.APP_API + '/v1/admin',init)
     if (response.ok) {
         const data = await response.json()
         movies = data.movies

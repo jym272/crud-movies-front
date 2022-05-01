@@ -4,12 +4,17 @@ import {useContext, useEffect, useState} from "react";
 import {store} from "../../Store";
 import {Page} from "../../../Types";
 import {useSession} from "next-auth/react";
+import {useRouter} from "next/router";
 
 export const Navigation = () => {
     const {data: session, status} = useSession();
     const context = useContext(store)
     const [subMenu, setSubMenu] = useState(false)
     const [mountSubMenu, setMountSubMenu] = useState(false)
+    // const router = useRouter()
+    // const baseUrl = router.pathname.split('/')[1]
+    // console.log(baseUrl)
+
     useEffect(() => {
         let timer: NodeJS.Timeout
         if (!subMenu) {
@@ -65,7 +70,12 @@ export const Navigation = () => {
             </Link>
         </li>
 
-        {isAuthenticated &&
+        {isAuthenticated &&<div className={styles["authenticated__menus"]}>
+            <li>
+                <Link href="/fav">
+                    <a className={context.activePage == Page.Fav ? styles.active : ""}>Fav</a>
+                </Link>
+            </li>
             <li>
                 <Link href="/admin">
                     <a
@@ -74,7 +84,7 @@ export const Navigation = () => {
                         className={context.activePage == Page.Catalog ? styles.active : ""}>Edit</a>
                 </Link>
                 {(mountSubMenu || context.activePage == Page.Add) && subMenuJSX}
-            </li>}
+            </li></div>}
 
     </nav>
 }

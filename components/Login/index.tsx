@@ -195,6 +195,13 @@ export const Login = () => {
         }
         setPassword('');
         setEyeToggle(false);
+        setErrors((prevState) => {
+            return {
+                ...prevState,
+                email: "",
+                password: ""
+            }
+        })
         passwordRef.current!.type = 'password';
         if (signUp) {
             if (emailRef.current) {
