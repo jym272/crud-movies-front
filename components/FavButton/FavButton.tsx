@@ -2,21 +2,30 @@
 import React, {useEffect} from "react";
 import styles from './FavButton.module.scss'
 
-export const FavButton = ({isFavorite,checkboxID, accessToken}:{isFavorite: boolean, checkboxID:number, accessToken:string}) => {
+export const FavButton = ({
+                              isFavorite,
+                              checkboxID,
+                              accessToken, remove
+                          }: {
+    isFavorite: boolean,
+    checkboxID: number,
+    accessToken: string,
+    remove?: (id: string) => (timeoutId: NodeJS.Timeout) => void
+}) => {
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [isFavoriteState, setIsFavoriteState] = React.useState(isFavorite);
 
-    useEffect(()=>{
+    useEffect(() => {
         //checked the input
-        if(inputRef.current){
+        if (inputRef.current) {
             inputRef.current.checked = isFavoriteState;
         }
 
-    },[isFavoriteState])
+    }, [isFavoriteState])
 
 
-    const clickHandler =(event:React.MouseEvent<HTMLDivElement>)=>{
+    const clickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
         const target = event.target as EventTarget & HTMLInputElement;
         const init = {
@@ -26,19 +35,22 @@ export const FavButton = ({isFavorite,checkboxID, accessToken}:{isFavorite: bool
                 "Authorization": `Bearer ${accessToken}`
             }
         }
-        if(target.id && target.id.length > 0 && Number(target.id) === checkboxID){
-            if (isFavorite){
+        if (target.id && target.id.length > 0 && Number(target.id) === checkboxID) {
+            if (isFavoriteState) {
                 fetch(`${process.env.APP_API}/v1/user/favorites?movie=${checkboxID}&action=remove`, init)
                     .then(res => res.json())
                     .then(data => {
                         if (data == "removed") {
+                            if(remove){
+                                remove(target.id);
+                            }
                             setIsFavoriteState(false)
                         } else {
                             setIsFavoriteState(true)
                         }
                     }).catch(err => console.log(err))
 
-            }else{
+            } else {
                 fetch(`${process.env.APP_API}/v1/user/favorites?movie=${checkboxID}&action=add`, init)
                     .then(res => res.json())
                     .then(data => {
@@ -54,9 +66,9 @@ export const FavButton = ({isFavorite,checkboxID, accessToken}:{isFavorite: bool
     }
 
     const checkboxIDString = checkboxID.toString();
-    return <div className={styles["fav__button"]}  >
+    return <div className={styles["fav__button"]}>
         <div className={styles.checkbox} onClick={clickHandler}>
-            <input ref={inputRef}  type="checkbox" id={checkboxIDString} />
+            <input ref={inputRef} type="checkbox" id={checkboxIDString}/>
             <label htmlFor={checkboxIDString}>
                 <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                     <g id="Group" fill="none" fillRule="evenodd" transform="translate(467 392)">

@@ -1,9 +1,8 @@
 import {useContext, useEffect} from "react";
-import {GridOfMovies, ListOfMovies, store} from "../../components";
+import {GridOfMovies, store} from "../../components";
 import {MovieType, Page} from "../../Types";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
-
 
 
 const FavPage = ({movies, error}: { movies: Array<MovieType>, error: string | null }) => {
@@ -13,10 +12,9 @@ const FavPage = ({movies, error}: { movies: Array<MovieType>, error: string | nu
         context.setActivePage(Page.Fav)
     }, [context])
 
-    //ojo con el path, tiene que ser autenticado dentro de favorites
-    // TODO:o puedo usar la ruta de graphql, pensar!!
+
     return <>
-        <GridOfMovies movies={movies} error={error} path="graphql/movies"/>
+        <GridOfMovies movies={movies} error={error} path="graphql/movies" removeUnFavorite={true}/>
     </>
 }
 

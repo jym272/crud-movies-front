@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './GridOfMovies.module.scss'
 import {useRouter} from "next/router";
 import {FavButton} from "../FavButton/FavButton";
-import React from "react";
+import React, {useCallback} from "react";
 import {useSession} from "next-auth/react";
 
 
@@ -16,7 +16,8 @@ export const GridOfMovies = ({
                                  movies,
                                  error,
                                  path,
-                             }: { movies: MovieType[], error: string | null, path:string }) => {
+                                 removeUnFavorite,
+                             }: { movies: MovieType[], error: string | null, path: string, removeUnFavorite?: boolean }) => {
 
     const router = useRouter();
     const {data: session, status} = useSession();
@@ -30,9 +31,34 @@ export const GridOfMovies = ({
         }
     };
 
+    const removeFromDom = useCallback((id: string) => {
+        const ID = `poster__${id}`;
+        const element = document.getElementById(ID);
+        if (element) {
+            element.remove();
+        }
+    }, [])
+
+
+    const addStyleToElement = useCallback((id: string) => {
+        const ID = `poster__${id}`;
+        const element = document.getElementById(ID);
+        if (element) {
+            element.classList.add(styles.vanish);
+        }
+        let timer: NodeJS.Timer
+        timer = setTimeout(() => {
+            removeFromDom(id)
+        }, 800);
+        return () => {
+            clearTimeout(timer);
+        }
+    }, [removeFromDom])
+
+
     const Grid = movies.map((movie: MovieType) => {
         let imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
-        return <div id={`poster__${movie.id}`} onClick={clickedHandler.bind(null, movie.id)}
+        return <div  id={`poster__${movie.id}`} onClick={clickedHandler.bind(null, movie.id)}
                     className={styles["poster__container"]}
                     key={movie.id}>
 
@@ -40,11 +66,12 @@ export const GridOfMovies = ({
                 <>
                     <Image src={imagePath} alt={movie.title} layout={"fill"}/>
                     {session &&
-                    <div id={`favorite__${movie.id}`} className={styles["toggle__favorite__handler"]}
-                    >
-                        <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
-                                   accessToken={session?.accessToken as string}/>
-                    </div>}
+                        <div id={`favorite__${movie.id}`} className={styles["toggle__favorite__handler"]}
+                        >
+                            <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
+                                       accessToken={session?.accessToken as string}
+                                       remove={removeUnFavorite ? addStyleToElement : undefined}/>
+                        </div>}
 
                 </>
                 :
@@ -53,10 +80,11 @@ export const GridOfMovies = ({
                     <Image src={"/images/poster_mock.png"} alt={movie.title} layout={"fill"}/>
                     {session &&
                         <div id={`favorite__${movie.id}`} className={styles["toggle__favorite__handler"]}
-                    >
-                        <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
-                                   accessToken={session?.accessToken as string}/>
-                    </div>}
+                        >
+                            <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
+                                       accessToken={session?.accessToken as string}
+                                       remove={removeUnFavorite ? addStyleToElement : undefined}/>
+                        </div>}
                     <div className={styles["poster__mock__title"]}>{movie.title}</div>
 
 
