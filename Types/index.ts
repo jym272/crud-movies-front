@@ -51,6 +51,7 @@ export type MovieType = {
     genres?: GenresMap
     genres_list?: Genres[]
     poster?: string
+    isFavorite?: boolean
 
 }
 

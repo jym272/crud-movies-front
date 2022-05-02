@@ -3,6 +3,8 @@ import Image from 'next/image';
 import styles from './GridOfMovies.module.scss'
 import {useRouter} from "next/router";
 import {FavButton} from "../FavButton/FavButton";
+import React from "react";
+import {useSession} from "next-auth/react";
 
 
 //Config: updated info for sizes and paths
@@ -13,35 +15,50 @@ import {FavButton} from "../FavButton/FavButton";
 export const GridOfMovies = ({
                                  movies,
                                  error,
-                             }: { movies: MovieType[], error: string | null }) => {
+                                 path,
+                             }: { movies: MovieType[], error: string | null, path:string }) => {
 
     const router = useRouter();
+    const {data: session, status} = useSession();
 
-
-    const goToMovieHandler = (movieId: number) => {
-        // router.push(`/graphql/movies/${movieId}`)
-    }
-
+    //element for click on movie
+    const clickedHandler = (movieId: number, event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        const id = event.currentTarget.id;
+        if (id.includes('poster')) {
+            router.push(`/${path}/${movieId.toString()}`);
+        }
+    };
 
     const Grid = movies.map((movie: MovieType) => {
         let imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
-        return <div onClick={goToMovieHandler.bind(this, movie.id)} className={styles["poster__container"]}
+        return <div id={`poster__${movie.id}`} onClick={clickedHandler.bind(null, movie.id)}
+                    className={styles["poster__container"]}
                     key={movie.id}>
 
             {movie.poster ?
                 <>
-                    {/*<Image src={imagePath} alt={movie.title} layout={"fill"}/>*/}
-                    {/*<div className={styles.fav}>*/}
-                        <FavButton/>
-                    {/*</div>*/}
+                    <Image src={imagePath} alt={movie.title} layout={"fill"}/>
+                    {session &&
+                    <div id={`favorite__${movie.id}`} className={styles["toggle__favorite__handler"]}
+                    >
+                        <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
+                                   accessToken={session?.accessToken as string}/>
+                    </div>}
 
                 </>
                 :
 
                 <>
                     <Image src={"/images/poster_mock.png"} alt={movie.title} layout={"fill"}/>
+                    {session &&
+                        <div id={`favorite__${movie.id}`} className={styles["toggle__favorite__handler"]}
+                    >
+                        <FavButton isFavorite={movie.isFavorite as boolean} checkboxID={movie.id}
+                                   accessToken={session?.accessToken as string}/>
+                    </div>}
                     <div className={styles["poster__mock__title"]}>{movie.title}</div>
-                    <div className={styles["toggle__favorite__handler"]}>{}</div>
+
 
                 </>
             }

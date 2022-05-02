@@ -1,7 +1,8 @@
 import {useContext, useEffect} from "react";
-import {ListOfMovies, store} from "../../components";
+import {GridOfMovies, ListOfMovies, store} from "../../components";
 import {MovieType, Page} from "../../Types";
 import {GetServerSideProps} from "next";
+import {getSession} from "next-auth/react";
 
 const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | null }) => {
     const context = useContext(store)
@@ -10,14 +11,20 @@ const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | nul
     }, [context])
 
     return <>
-        <ListOfMovies title={"Movies"} movies={movies} error={error} path="movies"/>
+        {/*<ListOfMovies title={"Movies"} movies={movies} error={error} path="movies"/>*/}
+        <GridOfMovies movies={movies} error={error} path="movies"/>
     </>
 }
 export default Movies
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let movies = [];
+
+    const session = await getSession(context)  //server side auth
+
+
+
+    let movies:Array<MovieType> =[]
     let error = null;
 
     const response = await fetch(process.env.APP_API + '/v1/movies')
@@ -27,6 +34,44 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     } else {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`
+    }
+    if (session){
+        const moviesIdsArray = movies.map(movie => movie.id)
+        const payload = {
+            ids: moviesIdsArray
+        }
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session?.accessToken}`
+            },
+            body: JSON.stringify(payload)
+        }
+        interface DataType {
+            [key: string]: boolean
+        }
+
+        let error: string | null = null
+        let data:DataType, response;
+        try {
+            response = await fetch(process.env.APP_API + '/v1/user/favorites?action=retrievefavorites', init)
+            data = await response.json()
+            if (response.ok && data) {
+                movies.forEach(movie => {
+                    movie.isFavorite = data[movie.id]
+                })
+
+            } else {
+                context.res.statusCode = response.status
+                throw new Error(data.error as unknown as string)
+            }
+        } catch (e) {
+            error = `Error ${response?.status}, ${response?.statusText}`
+            if (e instanceof Error) {
+                error = error + `: ${e.message}`
+            }
+        }
     }
 
     return {

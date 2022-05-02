@@ -41,15 +41,18 @@ export const MovieComponent = ({movie, genrePath, isFav}: { movie: MovieType, ge
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
 
     const addToFavHandler = async () => {
+
+
         if (session && session.user) {
+            const init = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.accessToken}`
+                }
+            }
             if (isFavorite){ //remove from favorites
-                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=remove`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${session.accessToken}`
-                    }
-                })
+                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=remove`, init)
                     .then(res => res.json())
                     .then(data => {
                         if (data == "removed") {
@@ -60,13 +63,7 @@ export const MovieComponent = ({movie, genrePath, isFav}: { movie: MovieType, ge
                     }).catch(err => console.log(err))
 
             }else{ //add to favorites
-                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=add`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${session.accessToken}`
-                    }
-                })
+                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=add`, init)
                     .then(res => res.json())
                     .then(data => {
                         if (data == "added") {

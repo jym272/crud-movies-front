@@ -16,7 +16,7 @@ const FavPage = ({movies, error}: { movies: Array<MovieType>, error: string | nu
     //ojo con el path, tiene que ser autenticado dentro de favorites
     // TODO:o puedo usar la ruta de graphql, pensar!!
     return <>
-        <GridOfMovies movies={movies} error={error}/>
+        <GridOfMovies movies={movies} error={error} path="graphql/movies"/>
     </>
 }
 
@@ -50,6 +50,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         data = await response.json()
         if (response.ok && data.movies) {
             movies.push(...data.movies)
+            movies.forEach(movie => {
+                movie.isFavorite = true
+            })
         } else {
             context.res.statusCode = response.status
             throw new Error(data.error)
@@ -60,7 +63,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             error = error + `: ${e.message}`
         }
     }
-    console.log(movies)
     return {
         props: {
             movies,
