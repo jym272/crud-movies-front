@@ -13,6 +13,11 @@ export const Page = {
 
 }
 
+export type Adjacent_Genres ={
+    next: Genres
+    previous: Genres
+    actual: Genres
+}
 
 
 export type Genres = {
@@ -41,6 +46,10 @@ export type MovieType = {
     adjacent_movies_ids?: {
         next: number,
         previous: number
+    }
+    withGenre?: {
+        id: number,
+        name: string
     }
 }
 

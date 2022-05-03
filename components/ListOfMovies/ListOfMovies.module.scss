@@ -1,5 +1,86 @@
 .movies__darkMode,
 .movies {
+
+  .genres__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.3rem;
+
+    .next__genre,
+    .previous__genre {
+      display: flex;
+      user-select: none;
+      div {
+        align-self: center;
+        font-style: italic;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.59);
+        padding: 0 0.6rem;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          color: rgba(0, 0, 0, 0.87);
+        }
+      }
+
+      svg {
+        cursor: pointer;
+        transform: scale(2) rotate(90deg);
+        path {
+          fill: black;
+        }
+        &:active {
+          animation: translate-hover 0.9s ease-in-out both;
+        }
+
+        @keyframes translate-hover {
+          0% {
+            transform: translateX(1px) scale(2) rotate(90deg);
+          }
+
+          100% {
+            transform: translateX(-1px) scale(2) rotate(90deg);
+
+          }
+        }
+      }
+
+
+    }
+    .next__genre{
+      svg{
+        transform: scale(2) rotate(-90deg);
+        &:active {
+          animation: translate-hover-next 0.9s ease-in-out both;
+        }
+
+
+      }
+      @keyframes translate-hover-next {
+        0% {
+          transform: translateX(-1px) scale(2) rotate(-90deg);
+        }
+
+        100% {
+          transform: translateX(1px) scale(2) rotate(-90deg);
+
+        }
+      }
+      @keyframes translate-hover-after-next {
+        0% {
+          transform: translateX(3px) scale(2) rotate(-90deg);
+        }
+
+        100% {
+          transform: translateX(0px) scale(2) rotate(-90deg);
+
+        }
+      }
+
+    }
+  }
+
   .list__movies {
     display: flex;
     flex-direction: column;
@@ -57,8 +138,28 @@
   }
 }
 
-.movies__darkMode{
+.movies__darkMode {
   color: white;
+  .genres__nav {
+
+    .next__genre,
+    .previous__genre {
+      div {
+        color: rgba(255, 255, 255, 0.59);
+        &:hover {
+          color: rgba(255, 255, 255, 0.87);
+        }
+      }
+
+      svg {
+        path {
+          fill: white;
+        }
+      }
+
+
+    }
+  }
 
 }
 

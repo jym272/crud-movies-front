@@ -26,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             notFound: true
         }
     }
+
     let movie: MovieType | null = null;
     let error: string | null = null
 

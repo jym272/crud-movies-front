@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
     let movies:Array<MovieType> =[]
-    let error = null;
+    let error:string|null = null;
 
     const response = await fetch(process.env.APP_API + '/v1/movies')
     if (response.ok) {
@@ -52,7 +52,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             [key: string]: boolean
         }
 
-        let error: string | null = null
         let data:DataType, response;
         try {
             response = await fetch(process.env.APP_API + '/v1/user/favorites?action=retrievefavorites', init)

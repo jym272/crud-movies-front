@@ -43,41 +43,43 @@ export const MovieComponent = ({movie, path, isFav}: { movie: MovieType, path: s
 
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
 
+    const cancelPath = movie.withGenre ? `/genres/${movie.withGenre.id}` : `/${path}`;
+
+    const uniqueMovie = (movie.id === movie.adjacent_movies_ids?.previous && movie.id === movie.adjacent_movies_ids?.next)
+    console.log(uniqueMovie)
+
     return <div className={context.darkMode ? styles.movie__darkMode : styles.movie}>
-        <div className={styles["buttons__navigation"]}>
-            <button className={styles.backwards}
-                    onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.previous}`)}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
-                        fill="white"/>
-                </svg>
-            </button>
-            <button className={styles.cancel} onClick={() => router.push(`/${path}`)}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
-                        fill="white"/>
-                </svg>
-            </button>
-            {/*<button className={styles["button__navigation"]} onClick={() => context.setMovie(movie.adjacent_forwards)}>*/}
-            {/*    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-            {/*        <path*/}
-            {/*            d="M4.59 6.59L12 12L19.41 6.59L21 8L12 19L3 8L4.59 6.59Z"*/}
-            {/*            fill="white"/>*/}
-            {/*    </svg>*/}
-            {/*</button>*/}
-            <button className={styles.forwards}
-                    onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.next}`)}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
-                        fill="white"/>
-                </svg>
-            </button>
+        <div className={styles.header}>
+            <h2>{movie.withGenre && movie.withGenre.name}</h2>
+            <div className={styles["buttons__navigation"]}>
+                <button className={uniqueMovie ? styles["backwards__disabled"] : styles.backwards}
+                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.previous}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}`)}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+                            fill="white"/>
+                    </svg>
+                </button>
+                <button className={styles.cancel} onClick={() => router.push(cancelPath)}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                            fill="white"/>
+                    </svg>
+                </button>
+
+                <button className={uniqueMovie ? styles["forwards__disabled"] : styles.forwards}
+                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.next}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}`)}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+                            fill="white"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        <div className={styles.header}>
+        <div className={styles["movie__header"]}>
             <h1 className={styles.title}>{movie.title}</h1>
             {session &&
                 <FavButton key={router.query.id as string} isFavorite={isFav} checkboxID={movie.id}

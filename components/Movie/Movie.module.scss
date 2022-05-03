@@ -1,51 +1,86 @@
 
 .movie__darkMode,
-.movie{
+.movie {
   color: black;
 
 
-  .buttons__navigation{
+  .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    button + button{
-      margin-left: 1rem;
+    h2{
+      font-size: 1.5rem;
+      font-weight: normal;
+      font-style: italic;
+      color: rgba(0, 0, 0, 0.67);
+      margin: 0;
     }
-    .forwards,
-    .cancel,
-    .backwards{
-      padding: 0.2em 0.3em 0.1em 0.3em;
-      background: #1ba4a3;
-      box-shadow: 0 0.0em 0.3em rgba(0,0,0,0.2);
-      border: 1px solid #1ba4a3;
-      border-radius: 0.4em;
-      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-      &:hover{
-        background: #14c8c7;
-        color: white;
-        border: 1px solid #14c8c7;
-        box-shadow: 0 0.0em 0.6em rgba(0,0,0,0.4);
+
+    .buttons__navigation {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      button + button {
+        margin-left: 1rem;
       }
-      &:active{
-        background: #0f9f9e;
-        box-shadow: 0 0.0em 0.3em rgba(0,0,0,0.2);
-        border: 1px solid #0f9f9e;
+
+      .forwards__disabled,
+      .backwards__disabled{
+        padding: 0.2em 0.3em 0.1em 0.3em;
+        background: rgba(27, 164, 163, 0.46);
+        border: rgba(27, 164, 163, 0.46);
+        border-radius: 0.4em;
+        pointer-events: none;
+      }
+
+      .forwards__disabled{
+        transform: rotate(180deg);
+        padding: 0.3em 0.3em 0.0em 0.3em;
       }
 
 
-    }
-    .forwards{
-      transform: rotate(180deg);
-      padding: 0.3em 0.3em 0.0em 0.3em;
+      .forwards,
+      .cancel,
+      .backwards {
+        padding: 0.2em 0.3em 0.1em 0.3em;
+        background: #1ba4a3;
+        box-shadow: 0 0.0em 0.3em rgba(0, 0, 0, 0.2);
+        border: 1px solid #1ba4a3;
+        border-radius: 0.4em;
+        transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+        &:hover {
+          background: #14c8c7;
+          color: white;
+          border: 1px solid #14c8c7;
+          box-shadow: 0 0.0em 0.6em rgba(0, 0, 0, 0.4);
+        }
+
+        &:active {
+          background: #0f9f9e;
+          box-shadow: 0 0.0em 0.3em rgba(0, 0, 0, 0.2);
+          border: 1px solid #0f9f9e;
+        }
+
+
+      }
+
+      .forwards {
+        transform: rotate(180deg);
+        padding: 0.3em 0.3em 0.0em 0.3em;
+      }
+
     }
 
   }
 
-  .header{
+  .movie__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-right: 36px;
+
     .title {
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.39);
     }
@@ -59,17 +94,20 @@
     height: 500px;
     margin-bottom: 20px;
     overflow: hidden;
-    .poster__container{
+
+    .poster__container {
       margin: 0 auto;
       padding: 0 0;
       position: relative;
       width: 333.3px;
       height: 500px;
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
+
       .poster__mock__title {
         position: absolute;
         bottom: 0;
@@ -90,6 +128,7 @@
         z-index: 2;
 
       }
+
       //overflow: hidden;
       z-index: 1;
     }
@@ -107,6 +146,7 @@
 
     span .classification {
       user-select: none;
+
       a {
         background-color: #5676c7;
         border-radius: 0.4rem;
@@ -144,34 +184,62 @@
   }
 }
 
-.movie__darkMode{
+.movie__darkMode {
   color: white;
 
-  .buttons__navigation{
-    .forwards,
-    .cancel,
-    .backwards{
-      background: #000000;
-      border: 1px solid #ffffff;
-      &:hover{
-        background: #6b0570;
-        border: 1px solid #6b0570;
-      }
-      &:active{
-        background: #e002e9;
-        border: 1px solid #e002e9;
-      }
 
-
+  .header {
+    h2{
+      color: rgba(255, 255, 255, 0.67);
     }
-    .forwards{
-      transform: rotate(180deg);
-      padding: 0.3em 0.3em 0.0em 0.3em;
+
+    .buttons__navigation {
+
+
+      .forwards__disabled,
+      .backwards__disabled{
+        padding: 0.2em 0.3em 0.1em 0.3em;
+        background: rgba(78, 78, 78, 0.46);
+        border-radius: 0.4em;
+        pointer-events: none;
+      }
+
+      .forwards__disabled{
+        padding: 0.3em 0.3em 0.0em 0.3em;
+      }
+
+
+
+
+      .forwards,
+      .cancel,
+      .backwards {
+        background: #000000;
+        border: 1px solid #ffffff;
+
+        &:hover {
+          background: #6b0570;
+          border: 1px solid #6b0570;
+        }
+
+        &:active {
+          background: #e002e9;
+          border: 1px solid #e002e9;
+        }
+
+
+      }
+
+      .forwards {
+        transform: rotate(180deg);
+        padding: 0.3em 0.3em 0.0em 0.3em;
+      }
+
     }
 
   }
 
-  .title{
+  .title {
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.39);
 
   }

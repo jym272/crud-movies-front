@@ -25,13 +25,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             notFound: true
         }
     }
+    //query
+    const withGenre = context.query.withgenre as string;
+
     let movie: MovieType | null = null;
     let error: string | null = null
-    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true`);
+    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true&withgenre=${withGenre?withGenre:""}`);
 
     if (response.ok) {
         const data = await response.json()
         movie = data.movie as MovieType
+        if (withGenre){
+            movie.withGenre = {
+                id: parseInt(withGenre),
+                name: data.with_genre_name
+            }
+        }
         movie.adjacent_movies_ids = {
             previous: data.adjacent_ids.ids[0],
             next: data.adjacent_ids.ids[1]

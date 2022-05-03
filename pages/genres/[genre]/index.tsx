@@ -1,9 +1,9 @@
 import {GetServerSideProps} from "next";
-import {MovieType, Page} from "../../../Types";
+import {Adjacent_Genres, MovieType, Page} from "../../../Types";
 import {useContext, useEffect} from "react";
 import {ListOfMovies, store} from "../../../components";
 
-const Genre = ({movies, genreTitle, error}: { movies: Array<MovieType>, genreTitle: string, error: string | null }) => {
+const Genre = ({movies, genreTitle, error, adjacent_genres}: { movies: Array<MovieType>, genreTitle: string, error: string | null, adjacent_genres: Adjacent_Genres | null }) => {
 
     const context = useContext(store)
     useEffect(() => {
@@ -11,7 +11,7 @@ const Genre = ({movies, genreTitle, error}: { movies: Array<MovieType>, genreTit
     }, [context])
 
     return <>
-        <ListOfMovies title={genreTitle} movies={movies} error={error} path="movies"/>
+        <ListOfMovies title={genreTitle} movies={movies} error={error} path="movies" adjacent_genres={adjacent_genres}/>
     </>
 
 }
@@ -23,24 +23,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let movies = [];
     let genreName = "";
     let error = null;
-
-    const response = await fetch(`${process.env.APP_API}/v1/movies?genre_id=${genreID}`)
+    let adjacent_genres: Adjacent_Genres|null = null;                                                    //adjacent_genres_ids only if genre_id is requested
+    const response = await fetch(`${process.env.APP_API}/v1/movies?genre_id=${genreID}&adjacent_genres_ids=true`)
     if (response.ok) {
         const data = await response.json()
-        movies = Object.keys(data).map((key) => {
-            genreName = key
-            return data[key]
-        })
+        genreName = data.genre_name
+        movies = data.movies
+        adjacent_genres = data.adjacent_genres as Adjacent_Genres
+        adjacent_genres.actual = {
+            id: parseInt(genreID),
+            name: genreName
+        }
+
     } else {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`
     }
-
     return {
         props: {
-            movies: movies[0],
+            movies,
             genreTitle: genreName,
-            error
+            error,
+            adjacent_genres
         }
     }
 }
