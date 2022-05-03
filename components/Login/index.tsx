@@ -79,7 +79,6 @@ export const Login = () => {
                 } else {
                     setNewUserCreated(true)
                     setSignUp(false)
-                    console.log(data)
                     setEmail(data.email)
 
                 }

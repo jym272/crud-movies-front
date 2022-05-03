@@ -1,14 +1,5 @@
 //TODO:
-1. La pre-renderizacion es antes de la autenticacion, ojo! Se puede golpear en el server
-   sin necesidad de estar autenticado, por ahora solo para solicitar recursos
-   de la aplicacion usando getsersideprops.
-   Lo ideal seria usar autenticacion en el server con next auth
-
-
 4.Add an animation when the user submit  and wait for the server to respond
-
-
-
 7. Cancel Button and navigation bwtween movies pagfes
 8. Back button
 9. Dark mode de las movies list grid

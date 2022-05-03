@@ -8,7 +8,7 @@ export const AboutComponent = () => {
     return (
         <div className={context.darkMode ? styles.about__darkMode : styles.about}>
             <h1>About</h1>
-            <p>This is a CRUD app v1.0.0. Written by Jorge Clavijo. Email: jym272@gmail.com.</p>
+            <p>This is a CRUD app v1.1.0. Written by Jorge Clavijo. Email: jym272@gmail.com.</p>
             <div>Frontend: React ( NextJS Framework )</div>
             <a target="_blank" rel="noopener noreferrer" href="https://github.com/jym272/crud-movies-front">Repository</a>
             <p>Database: PostgreSQL</p>

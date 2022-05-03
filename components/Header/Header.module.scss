@@ -10,6 +10,8 @@
   padding: 1.0em 0.5em 0.5em 0.5em;
   min-height: styles.$titleHeight;
 
+
+
   .line {
     margin-top: 0.4em;
     width: 100%;
@@ -24,6 +26,10 @@
     align-items: center;
     min-height: 50px;
 
+    div:first-child {
+      user-select: none;
+      cursor: pointer;
+    }
 
     .darkMode {
       display: flex;

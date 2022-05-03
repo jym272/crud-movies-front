@@ -1,32 +1,35 @@
 import {MovieType} from "../../Types";
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import styles from "./Movie.module.scss"
 import Link from "next/link";
 import Image from "next/image";
 import {store} from "../Store";
 import {useSession} from "next-auth/react";
+import {FavButton} from "../FavButton/FavButton";
+import {useRouter} from "next/router";
 
 //Config: updated info for sizes and paths
 //https://api.themoviedb.org/3/configuration?api_key=f6646a0386887b9fd168de141c70bd9b
 //image size available: w92, w154, w185, w342, w500, w780, original // can change
 //also for correct path to poster: https://image.tmdb.org/t/p/w500/ // can change
 
-export const MovieComponent = ({movie, genrePath, isFav}: { movie: MovieType, genrePath: string, isFav:boolean }) => {
+export const MovieComponent = ({movie, path, isFav}: { movie: MovieType, path: string, isFav: boolean }) => {
     const {data: session, status} = useSession();
     const context = useContext(store)
-    const [isFavorite, setIsFavorite] = React.useState(isFav);
+    const router = useRouter()
+
 
     let movieGenresList;
     if (movie.genres) {
         movieGenresList = Object.keys(movie.genres).map((index) => {
             return <span className={styles.classification} key={index}><Link
-                href={`${genrePath}/${index}`}>{movie.genres![index as unknown as number]}</Link></span>
+                href={`/genres/${index}`}>{movie.genres![index as unknown as number]}</Link></span>
         })
     }
     if (movie.genres_list) { //graphQL
         movieGenresList = movie.genres_list.map((genre, index) => {
             return <span className={styles.classification} key={index}><Link
-                href={`${genrePath}/${genre.id}`}>{genre.name}</Link></span> //these genre endpoints don't use graphQL //TODO: create these endpoints
+                href={`/graphql/genres/${genre.id}`}>{genre.name}</Link></span> //these genre endpoints don't use graphQL //TODO: create these endpoints
         })
     }
 
@@ -40,55 +43,55 @@ export const MovieComponent = ({movie, genrePath, isFav}: { movie: MovieType, ge
 
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
 
-    const addToFavHandler = async () => {
-
-
-        if (session && session.user) {
-            const init = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.accessToken}`
-                }
-            }
-            if (isFavorite){ //remove from favorites
-                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=remove`, init)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data == "removed") {
-                            setIsFavorite(false)
-                        } else {
-                            setIsFavorite(true)
-                        }
-                    }).catch(err => console.log(err))
-
-            }else{ //add to favorites
-                fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=add`, init)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data == "added") {
-                            setIsFavorite(true)
-                        } else {
-                            setIsFavorite(false)
-                        }
-                    }).catch(err => console.log(err))
-
-            }
-
-        }
-    }
-
-
     return <div className={context.darkMode ? styles.movie__darkMode : styles.movie}>
-        <div className={styles.header}>
-            <h1 className={styles.title}>{movie.title}</h1>
-            {session && <div className={styles.fav} onClick={addToFavHandler}>{isFavorite?"fav":"noFav"}</div>}
+        <div className={styles["buttons__navigation"]}>
+            <button className={styles.backwards}
+                    onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.previous}`)}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+                        fill="white"/>
+                </svg>
+            </button>
+            <button className={styles.cancel} onClick={() => router.push(`/${path}`)}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                        fill="white"/>
+                </svg>
+            </button>
+            {/*<button className={styles["button__navigation"]} onClick={() => context.setMovie(movie.adjacent_forwards)}>*/}
+            {/*    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
+            {/*        <path*/}
+            {/*            d="M4.59 6.59L12 12L19.41 6.59L21 8L12 19L3 8L4.59 6.59Z"*/}
+            {/*            fill="white"/>*/}
+            {/*    </svg>*/}
+            {/*</button>*/}
+            <button className={styles.forwards}
+                    onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.next}`)}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
+                        fill="white"/>
+                </svg>
+            </button>
         </div>
 
-        {movie.poster && <div className={styles.ImageContainer}>
-            <Image src={imagePath} alt={movie.title} layout={"fill"} objectFit={"contain"}/>
-        </div>}
+        <div className={styles.header}>
+            <h1 className={styles.title}>{movie.title}</h1>
+            {session &&
+                <FavButton key={router.query.id as string} isFavorite={isFav} checkboxID={movie.id}
+                           accessToken={session.accessToken as string}/>}
 
+        </div>
+        <div className={styles.ImageContainer}>
+            {movie.poster ?
+                <Image src={imagePath} alt={movie.title} layout={"fill"} objectFit={"contain"} priority={true}/>
+                : <div className={styles["poster__container"]}><Image src={"/images/poster_mock.png"} alt={movie.title}
+                                                                      layout={"fill"} priority={true}/>
+                    <div className={styles["poster__mock__title"]}>{movie.title}</div>
+                </div>}
+        </div>
         <div className={styles["rating__classification"]}>
             <span>Rating: {movie.mpaa_rating}</span>
             <span>{movieGenresList}</span>

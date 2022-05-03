@@ -10,7 +10,7 @@ const Movie = ({movie, error, isFav}: { movie: MovieType, error: string | null, 
         return <div>{error}</div>
     }
 
-    return <MovieComponent movie={movie} genrePath={"/genres"} isFav={isFav}/>
+    return <MovieComponent movie={movie} path={"movies"} isFav={isFav}/>
 }
 
 export default Movie;
@@ -27,11 +27,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     let movie: MovieType | null = null;
     let error: string | null = null
-    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}`);
+    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true`);
 
     if (response.ok) {
         const data = await response.json()
-        movie = data.movie
+        movie = data.movie as MovieType
+        movie.adjacent_movies_ids = {
+            previous: data.adjacent_ids.ids[0],
+            next: data.adjacent_ids.ids[1]
+        }
     } else {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`

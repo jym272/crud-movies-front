@@ -15,20 +15,6 @@ export const Page = {
 
 
 
-
-export const GenresModel: Genres[] = [
-    {id: 3, name: 'Action'},
-    {id: 7, name: 'Adventure'},
-    {id: 8, name: 'Comedy'},
-    {id: 4, name: 'Comic Book'},
-    {id: 2, name: 'Crime'},
-    {id: 1, name: 'Drama'},
-    {id: 6, name: 'Mystery'},
-    {id: 9, name: 'Romance'},
-    {id: 5, name: 'Sci-Fi'}
-]
-
-
 export type Genres = {
     id: number,
     name: string
@@ -52,7 +38,10 @@ export type MovieType = {
     genres_list?: Genres[]
     poster?: string
     isFavorite?: boolean
-
+    adjacent_movies_ids?: {
+        next: number,
+        previous: number
+    }
 }
 
 export const MPAARating = {

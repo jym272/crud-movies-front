@@ -1,15 +1,15 @@
-import {ComponentWithAuth, MovieType} from "../../../../../Types";
+import {ComponentWithAuth, Genres, MovieType} from "../../../../../Types";
 import {AddMovieForm} from "../../../../../components";
 import React from "react";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 
-const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null }> = ({movie, error}) => {
+const EditMovie: ComponentWithAuth<{ movie: MovieType, error: string | null, genres_list:Genres[] }> = ({movie, error, genres_list}) => {
 
     if (error) {
         return <div>{error}</div>
     }
-    return <AddMovieForm movie={movie}/>
+    return <AddMovieForm movie={movie} genres_list={genres_list}/>
 }
 
 export default EditMovie;
@@ -38,7 +38,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     let movie: MovieType | null = null;
     let error: string | null = null
-    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}`);
+    let genres_list:Genres[] = [];
+    let response = await fetch(`${process.env.APP_API}/v1/movie/${id}`);
 
     if (response.ok) {
         const data = await response.json()
@@ -47,10 +48,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`
     }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: `{
+                    genres_list
+                    {
+                        id
+                        name
+                    }
+                }`
+    };
+
+
+    response = await fetch(process.env.APP_API + '/v1/graphql', requestOptions);
+    if (response.ok) {
+        const data = await response.json()
+        genres_list = data.data.genres_list
+    } else {
+        context.res.statusCode = response.status
+        error = `Error ${response.status}, ${response.statusText}`
+    }
+
     return {
         props: {
             movie: movie,
-            error
+            error,
+            genres_list
         }
     }
 }

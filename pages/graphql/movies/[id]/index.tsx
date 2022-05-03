@@ -11,7 +11,7 @@ const Movie = ({movie, error, isFav}: { movie: MovieType, error: string | null, 
     }
 
 
-    return <MovieComponent movie={movie} genrePath={"/graphql/genres"} isFav={isFav}/>
+    return <MovieComponent movie={movie} path={"graphql"} isFav={isFav}/>
 }
 
 export default Movie;
@@ -50,6 +50,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                         id 
                         name 
                     }
+                    adjacent_movies_ids
+                    {
+                        next
+                        previous
+                    }
+                    
                 }
             }`
     };
@@ -76,7 +82,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let isFav: boolean = false;
     if (session && movie) {
-        movie.id = parseInt(id as string); //add id to movie
+        movie.id = parseInt(id as string); //add id to movie //TODO: make this in graphql
         const response = await  fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=query`, {
             method: "GET",
             headers: {

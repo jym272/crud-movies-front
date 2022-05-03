@@ -1,7 +1,6 @@
 import styles from "./AddMovieForm.module.scss"
-import React, {useContext, useEffect} from "react";
-import {GenresMap, MovieType, MPAARating} from "../../Types";
-import {getIDs} from "../../utils";
+import React, {useEffect} from "react";
+import {Genres, GenresMap, MovieType, MPAARating} from "../../Types";
 import {useRouter} from "next/router";
 import {store} from "../Store";
 import {useSession} from "next-auth/react";
@@ -57,11 +56,23 @@ function reducer(state: ReducerStateType, action: ReducerActionType) {
 }
 
 
-export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
+export const getIDs = (genres: string[], genres_list: Genres[]) => {
+    const genresMap: GenresMap = {};
+    genres.forEach((genre: string) => {
+        const genre_ = genres_list.find((item: Genres) => item.name === genre);
+        if (genre_) {
+            genresMap[genre_.id] = genre_.name;
+        }
+    });
+    return genresMap;
+};
+
+
+export const AddMovieForm = ({movie, genres_list}: { movie: MovieType | null, genres_list: Genres[] }) => {
 
     const router = useRouter();
     const context = React.useContext(store);
-    const {data: session, status} = useSession( );
+    const {data: session, status} = useSession();
 
     function transformDate(release_date: string): string {
         const date = release_date.split("T")[0].split("-");
@@ -150,6 +161,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
                 return [...previousValues, 'title']
             })
         }
+        console.log(getIDs(genresValue, genres_list))
         const payload: MovieType = {
             id: movie ? movie.id : 0, //zero is a new movie
             title: title.trim(),
@@ -158,7 +170,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
             description: description.trim(),
             rating: Number(rating),
             mpaa_rating: mpaaRatingValue,
-            genres: getIDs(genresValue)
+            genres: getIDs(genresValue, genres_list)
         }
         // 'Authorization': `Bearer ${localStorage.getItem('token')}`
         const postObject = {
@@ -197,8 +209,12 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
         return []
     }
 
+    const genres_options = genres_list.map(genre => {
+        return <option key={genre.id} value={genre.name}>{genre.name}</option>
+    })
+
     return (
-        <form className={ context.darkMode ? styles.form__darkMode:styles.form } onSubmit={submitFormHandler}>
+        <form className={context.darkMode ? styles.form__darkMode : styles.form} onSubmit={submitFormHandler}>
             <label htmlFor="title">Title</label>
             <input type="text" id="title"
                    value={title}
@@ -245,15 +261,7 @@ export const AddMovieForm = ({movie}: { movie: MovieType | null }) => {
 
             <label htmlFor="genres" className={styles.genres}>Choose one or more genres
                 <select id="genres" name="genres" multiple size={5} required defaultValue={getGenres()}>
-                    <option value="Drama">Drama</option>
-                    <option value="Action">Action</option>
-                    <option value="Crime">Crime</option>
-                    <option value="Sci-Fi">Sci-Fi</option>
-                    <option value="Comic Book">Comic Book</option>
-                    <option value="Mystery">Mystery</option>
-                    <option value="Adventure">Adventure</option>
-                    <option value="Comedy">Comedy</option>
-                    <option value="Romance">Romance</option>
+                    {genres_options}
                 </select>
             </label>
 

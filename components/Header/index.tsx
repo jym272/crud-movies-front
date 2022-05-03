@@ -24,7 +24,7 @@ export const Header = () => {
     return <div className={context.darkMode ? styles.title__darkMode : styles.title}>
         <div className={styles.header}>
             <div>
-                Go watch some movies!
+                <a target="_blank" rel="noopener noreferrer" href="https://www.stremio.com/">Go watch some movies!</a>
             </div>
 
 
