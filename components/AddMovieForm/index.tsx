@@ -161,7 +161,6 @@ export const AddMovieForm = ({movie, genres_list}: { movie: MovieType | null, ge
                 return [...previousValues, 'title']
             })
         }
-        console.log(getIDs(genresValue, genres_list))
         const payload: MovieType = {
             id: movie ? movie.id : 0, //zero is a new movie
             title: title.trim(),

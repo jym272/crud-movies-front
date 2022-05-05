@@ -42,13 +42,7 @@ export const MovieComponent = ({movie, cancelPath, isFav}: { movie: MovieType, c
     });
 
     const imagePath = `https://image.tmdb.org/t/p/w500/${movie.poster}`;
-
-
     const uniqueMovie = (movie.id === movie.adjacent_movies_ids?.previous && movie.id === movie.adjacent_movies_ids?.next)
-    console.log("AA: ",movie.withSearch)
-
-
-
     return <div className={context.darkMode ? styles.movie__darkMode : styles.movie}>
         <div className={styles.header}>
             <h2>{movie.withGenre ? movie.withGenre.name:movie.withSearch?"Search: "+movie.withSearch:"" }</h2>
