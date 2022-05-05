@@ -4,13 +4,13 @@ import {MovieType} from "../../../Types";
 import {MovieComponent} from "../../../components";
 import {getSession, useSession} from "next-auth/react";
 
-const Movie = ({movie, error, isFav}: { movie: MovieType, error: string | null, isFav:boolean }) => {
+const Movie = ({movie, error, isFav, cancelPath}: { movie: MovieType, error: string | null, isFav:boolean, cancelPath:string }) => {
 
     if (error) {
         return <div>{error}</div>
     }
 
-    return <MovieComponent movie={movie} path={"movies"} isFav={isFav}/>
+    return <MovieComponent movie={movie} cancelPath={cancelPath} isFav={isFav}/>
 }
 
 export default Movie;
@@ -27,10 +27,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     //query
     const withGenre = context.query.withgenre as string;
+    const withSearch = context.query.withsearch ;
 
     let movie: MovieType | null = null;
     let error: string | null = null
-    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true&withgenre=${withGenre?withGenre:""}`);
+    let cancelPath = "/movies";
+    const response = await fetch(`${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true&withgenre=${withGenre?withGenre:""}&withsearch=${withSearch?withSearch:""}`);
 
     if (response.ok) {
         const data = await response.json()
@@ -40,6 +42,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 id: parseInt(withGenre),
                 name: data.with_genre_name
             }
+            cancelPath = `/genres/${movie.withGenre.id}`
+        }
+        if(withSearch!= undefined || withSearch){
+            movie.withSearch = withSearch as string
+            cancelPath = `/search/${movie.withSearch}`
+            //transform to valid path using %20
+            // const transformedSearch = movie.withSearch.replace(/ /g, "%20")
+
         }
         movie.adjacent_movies_ids = {
             previous: data.adjacent_ids.ids[0],
@@ -73,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             movie: movie,
             error,
             isFav,
+            cancelPath,
         }
     }
 }

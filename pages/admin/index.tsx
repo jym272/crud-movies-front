@@ -10,7 +10,7 @@ const Catalog: ComponentWithAuth<{ movies: Array<MovieType>, error: string | nul
         context.setActivePage(Page.Catalog)
     }, [context])
     return <>
-        <ListOfMovies title={"Edit My Movies"} movies={movies} error={error} path="admin/movie/edit"/>
+        <ListOfMovies with_search={undefined} adjacent_genres={null} title={"Edit My Movies"} movies={movies} error={error} path="admin/movie/edit"/>
     </>
 }
 export default Catalog

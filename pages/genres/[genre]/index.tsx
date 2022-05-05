@@ -11,7 +11,7 @@ const Genre = ({movies, genreTitle, error, adjacent_genres}: { movies: Array<Mov
     }, [context])
 
     return <>
-        <ListOfMovies title={genreTitle} movies={movies} error={error} path="movies" adjacent_genres={adjacent_genres}/>
+        <ListOfMovies with_search={undefined} title={genreTitle} movies={movies} error={error} path="movies" adjacent_genres={adjacent_genres}/>
     </>
 
 }

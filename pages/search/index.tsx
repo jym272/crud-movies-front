@@ -11,7 +11,7 @@ const Graphql = ({moviesList, error}: { moviesList: Array<MovieType>, error: str
     }, [context])
 
 
-    return <GraphQLComponent list={moviesList} error={error}/>
+    return <GraphQLComponent list={moviesList} error={error} search={""}/>
 
 }
 export default Graphql

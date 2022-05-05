@@ -4,11 +4,16 @@ import {ListOfMovies} from "../ListOfMovies";
 import styles from "./GraphQL.module.scss"
 
 
-export const GraphQLComponent = ({list, error:error_}:{list:Array<MovieType>, error:string|null}) => {
+export const GraphQLComponent = ({
+                                     list,
+                                     error: error_,
+                                     search: search_
+                                 }: { list: Array<MovieType>, error: string | null, search: string }) => {
 
-    const [search, setSearch] = useState("");
+
+    const [search, setSearch] = useState(search_);
     const [moviesList, setMoviesList] = useState<Array<MovieType>>(list);
-    const [error, setError] = useState<string|null>(error_);
+    const [error, setError] = useState<string | null>(error_);
 
 
     useEffect(() => {
@@ -45,7 +50,8 @@ export const GraphQLComponent = ({list, error:error_}:{list:Array<MovieType>, er
                 onChange={(event) => setSearch(event.target.value)}
             />
         </div>
-        <ListOfMovies title={""} movies={moviesList} error={error} path={"graphql/movies"}/>
+        <ListOfMovies with_search={search} adjacent_genres={null} title={""} movies={moviesList} error={error}
+                      path={"movies"}/>
     </>
 }
 

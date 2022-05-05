@@ -11,7 +11,6 @@ const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | nul
     }, [context])
 
     return <>
-        {/*<ListOfMovies title={"Movies"} movies={movies} error={error} path="movies"/>*/}
         <GridOfMovies movies={movies} error={error} path="movies"/>
     </>
 }
@@ -21,16 +20,29 @@ export default Movies
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const session = await getSession(context)  //server side auth
-
-
-
     let movies:Array<MovieType> =[]
     let error:string|null = null;
 
-    const response = await fetch(process.env.APP_API + '/v1/movies')
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: `{
+                    list
+                    {
+                        id
+				    	title
+						poster
+                    
+                    }
+                }`
+    };
+    const response = await fetch(`${process.env.APP_API}/v1/graphql`, requestOptions);
     if (response.ok) {
         const data = await response.json()
-        movies = data.movies
+        movies = data.data.list
     } else {
         context.res.statusCode = response.status
         error = `Error ${response.status}, ${response.statusText}`

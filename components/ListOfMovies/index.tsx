@@ -10,11 +10,13 @@ export const ListOfMovies = ({
                                  movies,
                                  error,
                                  path,
-                                 adjacent_genres
+                                 adjacent_genres,
+                                 with_search,
                              }: {
     title: string, movies: MovieType[],
     error: string | null, path: string,
-    adjacent_genres: Adjacent_Genres | null
+    adjacent_genres: Adjacent_Genres | null,
+    with_search: string | undefined
 }) => {
 
     const context = useContext(store);
@@ -22,7 +24,8 @@ export const ListOfMovies = ({
 
     const listMoviesTitle = movies.map((movie: MovieType) => {
         return <li key={movie.id}>
-            <Link href={`/${path}/${movie.id}${adjacent_genres ? "?withgenre="+adjacent_genres.actual.id:""}`} passHref>
+            <Link href={`/${path}/${movie.id}${adjacent_genres ? "?withgenre=" + adjacent_genres.actual.id : with_search!=undefined? "?withsearch=" + with_search : ""}`}
+                  passHref>
                 <a>{movie.title}</a>
             </Link>
         </li>
@@ -39,12 +42,16 @@ export const ListOfMovies = ({
                                 fill="white"/>
                         </svg>
                     </Link>
-                    <div onClick={()=>{router.push(`/genres/${adjacent_genres.previous.id}`)}}>
+                    <div onClick={() => {
+                        router.push(`/genres/${adjacent_genres.previous.id}`)
+                    }}>
                         {adjacent_genres.previous.name}
                     </div>
                 </div>
                 <div className={styles["next__genre"]}>
-                    <div  onClick={()=>{router.push(`/genres/${adjacent_genres.next.id}`)}}>
+                    <div onClick={() => {
+                        router.push(`/genres/${adjacent_genres.next.id}`)
+                    }}>
                         {adjacent_genres.next.name}
                     </div>
                     <Link href={`/genres/${adjacent_genres.next.id}`} passHref>

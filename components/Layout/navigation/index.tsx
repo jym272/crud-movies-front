@@ -65,8 +65,8 @@ export const Navigation = () => {
             </Link>
         </li>
         <li>
-            <Link href="/graphql">
-                <a className={context.activePage == Page.GraphQL ? styles.active : ""}>GraphQL</a>
+            <Link href="/search">
+                <a className={context.activePage == Page.GraphQL ? styles.active : ""}>Search</a>
             </Link>
         </li>
 
