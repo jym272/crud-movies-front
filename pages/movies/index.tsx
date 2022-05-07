@@ -11,7 +11,7 @@ const Movies = ({movies, error}: { movies: Array<MovieType>, error: string | nul
     }, [context])
 
     return <>
-        <GridOfMovies movies={movies} error={error} path="movies"/>
+        <GridOfMovies movies={movies} error={error} />
     </>
 }
 export default Movies

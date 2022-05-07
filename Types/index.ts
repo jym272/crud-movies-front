@@ -52,6 +52,7 @@ export type MovieType = {
         name: string
     }
     withSearch?:string
+    withFav?:boolean
 }
 
 export const MPAARating = {

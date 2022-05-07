@@ -15,9 +15,8 @@ import {useSession} from "next-auth/react";
 export const GridOfMovies = ({
                                  movies,
                                  error,
-                                 path,
                                  removeUnFavorite,
-                             }: { movies: MovieType[], error: string | null, path: string, removeUnFavorite?: boolean }) => {
+                             }: { movies: MovieType[], error: string | null,  removeUnFavorite?: boolean }) => {
 
     const router = useRouter();
     const {data: session, status} = useSession();
@@ -27,7 +26,11 @@ export const GridOfMovies = ({
         event.stopPropagation();
         const id = event.currentTarget.id;
         if (id.includes('poster')) {
-            router.push(`/${path}/${movieId.toString()}`);
+            let url =`/movies/${movieId.toString()}`
+            if(removeUnFavorite){
+                url = url + "?withfav=true"
+            }
+            router.push(url);
         }
     };
 

@@ -14,7 +14,7 @@ const FavPage = ({movies, error}: { movies: Array<MovieType>, error: string | nu
 
 
     return <>
-        <GridOfMovies movies={movies} error={error} path="movies" removeUnFavorite={true}/>
+        <GridOfMovies movies={movies} error={error} removeUnFavorite={true}/>
     </>
 }
 

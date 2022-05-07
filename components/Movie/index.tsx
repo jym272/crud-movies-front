@@ -13,7 +13,11 @@ import {useRouter} from "next/router";
 //image size available: w92, w154, w185, w342, w500, w780, original // can change
 //also for correct path to poster: https://image.tmdb.org/t/p/w500/ // can change
 
-export const MovieComponent = ({movie, cancelPath, isFav}: { movie: MovieType, cancelPath: string, isFav: boolean }) => {
+export const MovieComponent = ({
+                                   movie,
+                                   cancelPath,
+                                   isFav
+                               }: { movie: MovieType, cancelPath: string, isFav: boolean }) => {
     const {data: session, status} = useSession();
     const context = useContext(store)
     const router = useRouter()
@@ -45,10 +49,10 @@ export const MovieComponent = ({movie, cancelPath, isFav}: { movie: MovieType, c
     const uniqueMovie = (movie.id === movie.adjacent_movies_ids?.previous && movie.id === movie.adjacent_movies_ids?.next)
     return <div className={context.darkMode ? styles.movie__darkMode : styles.movie}>
         <div className={styles.header}>
-            <h2>{movie.withGenre ? movie.withGenre.name:movie.withSearch?"Search: "+movie.withSearch:"" }</h2>
+            <h2>{movie.withGenre ? movie.withGenre.name : movie.withSearch ? "Search: " + movie.withSearch : movie.withFav ? "My Favorites" : ""}</h2>
             <div className={styles["buttons__navigation"]}>
                 <button className={uniqueMovie ? styles["backwards__disabled"] : styles.backwards}
-                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.previous}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}${movie.withSearch!=undefined ? "?withsearch=" + movie.withSearch : ""}`)}>
+                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.previous}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}${movie.withSearch != undefined ? "?withsearch=" + movie.withSearch : ""}${movie.withFav  ? "?withfav=true": ""}`)}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
@@ -64,7 +68,7 @@ export const MovieComponent = ({movie, cancelPath, isFav}: { movie: MovieType, c
                 </button>
 
                 <button className={uniqueMovie ? styles["forwards__disabled"] : styles.forwards}
-                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.next}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}${movie.withSearch!=undefined ? "?withsearch=" + movie.withSearch : ""}`)}>
+                        onClick={() => router.push(`/movies/${movie.adjacent_movies_ids?.next}${movie.withGenre ? "?withgenre=" + movie.withGenre.id : ""}${movie.withSearch != undefined ? "?withsearch=" + movie.withSearch : ""}${movie.withFav  ? "?withfav=true": ""}`)}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
