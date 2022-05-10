@@ -39,17 +39,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let error: string | null = null
     let cancelPath = "/movies";  //default
 
-    const init = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session!.accessToken}`
-        }
-    }
+
 
     let URL = `${process.env.APP_API}/v1/movie/${id}?adjacent_ids=true&withgenre=${withGenre ? withGenre : ""}&withsearch=${withSearch ? withSearch : ""}`
     let response: Response;
     if (withFav == "true" && session) {
+        const init = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.accessToken}`
+            }
+        }
+
         URL = `${process.env.APP_API}/v1/admin/favorites/${id}?adjacent_ids=true&withfav=true`
         response = await fetch(URL, init);
     } else {
@@ -87,6 +89,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
     if (session && movie) {
+        const init = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.accessToken}`
+            }
+        }
         const response = await fetch(`${process.env.APP_API}/v1/user/favorites?movie=${movie.id}&action=query`, init)
         if (response.ok) {
             const data = await response.json()
